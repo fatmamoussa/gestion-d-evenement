@@ -1,0 +1,55 @@
+{% load static i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as LANGUAGES %}
+{% get_language_info_list for LANGUAGES as langs %}
+<footer class="fixed bottom-0 left-0 z-20 w-full p-4 bg-white border-t border-gray-200 shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800 dark:border-gray-600">
+     <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <a href="#" class="hover:underline">Runner Out™</a>. {% translate "All Rights Reserved" %}.
+     </span>
+     <br>
+     <br>
+     <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
+          <li class="mr-4 md:mr-6 ">
+               <button type="button"
+                       data-dropdown-toggle="language-dropdown-menu"
+                       class="inline-flex items-center justify-center px-4 py-2 text-sm rounded-lg cursor-pointer">
+                    {% if LANGUAGE_CODE == 'en' %}
+                         <span class="fi fi-us mr-2"></span>
+                    {% elif LANGUAGE_CODE == 'fr' %}
+                         <span class="fi fi-fr mr-2"></span>
+                    {% endif %}
+                    {{ LANGUAGE_CODE|language_name_translated }}
+               </button>
+               <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700"
+                    id="language-dropdown-menu">
+                    <ul class="py-2" role="none">
+                         {% comment %} liste des langes  {% endcomment %}
+                        {% for lang in langs %}
+                              <li>
+                                   <a href="/{{ lang.code }}{{ request.get_full_path|slice:'3:' }}"
+                                      lang="{{ lang.code }}"
+                                      class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
+                                      role="menuitem">
+                                        <div class="inline-flex items-center">
+                                             {% if lang.code == 'en' %}
+                                                  <span class="fi fi-us mr-2"></span>
+                                             {% elif lang.code == 'fr' %}
+                                                  <span class="fi fi-fr mr-2"></span>
+                                           {% endif %}
+                                             {{ lang.name_local }}
+                                        </div>
+                                   </a>
+                              </li>
+                         {% endfor %}
+                    </ul>
+               </div>
+          </li> 
+          <li>
+               <a href="{% url 'page' slug='privacy-policy' %}"
+                  class="mr-4 hover:underline md:mr-6">{% translate "Privacy Policy" %}</a>
+          </li>
+          <li>
+               <a href="{% url 'page' slug='terms-conditions' %}"
+                  class="mr-4 hover:underline md:mr-6">{% translate "Terms & Conditions" %}</a>
+          </li>
+     </ul>
+</footer>

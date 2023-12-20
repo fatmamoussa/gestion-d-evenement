@@ -1,0 +1,1055 @@
+{% extends "base/base.html" %}
+{% load static i18n mapbox_location_field_tags %}
+{% block extrahead %}
+{% comment %}  Cette bibliothèque fournit des icônes   {% endcomment %}
+     <script src="https://kit.fontawesome.com/fb83807808.js"
+             crossorigin="anonymous"></script>
+     <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css"
+           rel="stylesheet"/>
+     <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.js"></script>
+     <link rel="stylesheet"
+           href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.css"
+           type="text/css"/>
+{% endblock extrahead %}
+{% block title %}
+     {% translate "Event:" %} {{ object.name }}
+{% endblock title %}
+{% block content %}
+     <div class="container mx-auto">
+          <div class="grid grid-cols-1 p-2 md:p-20 xl:grid-cols-3 xl:gap-4 ">
+               <div class="mb-4 col-span-full xl:mb-2">
+                    <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white mb-6 capitalize">
+                         {% translate "Event:" %} {{ object.name }}
+                    </h1>
+                    <nav class="flex" aria-label="Breadcrumb">
+                         <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                              <li class="inline-flex items-center">
+                                   <a href="{% url 'home' %}"
+                                      class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                                        <svg aria-hidden="true"
+                                             class="w-4 h-4 min-w-4 min-h-4 mr-2"
+                                             fill="currentColor"
+                                             viewBox="0 0 20 20"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                             <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                                             </path>
+                                        </svg>
+                                        {% translate "Home" %}
+                                   </a>
+                              </li>
+                              <li>
+                                   <div class="flex items-center">
+                                        <svg aria-hidden="true"
+                                             class="w-6 h-6 text-gray-400"
+                                             fill="currentColor"
+                                             viewBox="0 0 20 20"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                             <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd">
+                                             </path>
+                                        </svg>
+                                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">
+                                             
+                                                  {% translate "Event" %}
+                                             
+                                        </span>
+                                   </div>
+                              </li>
+                              <li aria-current="page">
+                                   <div class="flex items-center">
+                                        <svg aria-hidden="true"
+                                             class="w-6 h-6 text-gray-400"
+                                             fill="currentColor"
+                                             viewBox="0 0 20 20"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                             <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd">
+                                             </path>
+                                        </svg>
+                                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">{{ object.name }}</span>
+                                   </div>
+                              </li>
+                         </ol>
+                    </nav>
+               </div>
+
+
+               
+               <div class="col-span-full xl:col-auto">
+                    <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                         <div class="items-center sm:flex xl:block 2xl:flex sm:space-x-4 xl:space-x-0 2xl:space-x-4">
+                               <img class="mb-4 rounded-lg w-28 h-28 sm:mb-0 xl:mb-4 2xl:mb-0"
+                                   src="{{ object.thumbnail.url }}"
+                                   alt="{{ object.name }}"/> 
+                              <div>
+                                   <h1 class="mb-1 text-xl font-bold text-gray-900 dark:text-white capitalize">{{ object.name }}</h1>
+                                   <div class="mb-4 text-sm text-gray-500 dark:text-gray-400">
+                                        <ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
+                                             <li class="flex items-center pb-1.5">
+                                                  <svg class="h-5 w-5 mr-1.5 text-gray-600 dark:text-gray-400"
+                                                       fill="none"
+                                                       stroke="currentColor"
+                                                       stroke-width="1.5"
+                                                       viewBox="0 0 24 24"
+                                                       xmlns="http://www.w3.org/2000/svg"
+                                                       aria-hidden="true">
+                                                       <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                       <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z">
+                                                       </path>
+                                                  </svg>
+                                                  {{ object.address }}
+                                             </li>
+                                             <li class="flex items-center pb-1.5">
+                                                  <svg class="h-5 w-5 mr-1.5 text-gray-600 dark:text-gray-400"
+                                                       fill="none"
+                                                       stroke="currentColor"
+                                                       stroke-width="1.5"
+                                                       viewBox="0 0 24 24"
+                                                       xmlns="http://www.w3.org/2000/svg"
+                                                       aria-hidden="true">
+                                                       <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75">
+                                                       </path>
+                                                  </svg>
+                                                  <a href="mailto:{{ object.user.email }}"
+                                                     class="text-purpelPrime dark:text-yallowPrime">{{ object.user.email }}</a>
+                                             </li>
+                                             <li class="flex items-center pb-1.5">
+                                                  <svg class="h-5 w-5 mr-1.5 text-gray-600 dark:text-gray-400"
+                                                       fill="none"
+                                                       stroke="currentColor"
+                                                       stroke-width="1.5"
+                                                       viewBox="0 0 24 24"
+                                                       xmlns="http://www.w3.org/2000/svg"
+                                                       aria-hidden="true">
+                                                       <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z">
+                                                       </path>
+                                                       <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"></path>
+                                                  </svg>
+                                                  {% for act in object.user.profile.activity.all %}{{ act }}{% endfor %}
+                                             </li>
+                                        </ul>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+                    {% comment %} likes {% endcomment %}
+                    <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                         <div class="items-center sm:flex xl:block 2xl:flex sm:space-x-4 xl:space-x-0 2xl:space-x-4">
+                              {% if user.is_authenticated %}
+                                   <form method="post" action="{% url 'like_event' object.slug %}">
+                                        {% csrf_token %}
+                                        {% if liked %}
+                                             <button type="submit"
+                                                     name="object_id"
+                                                     value="{{ object.id }}"
+                                                     class="inline-flex items-center text-white bg-gradient-to-r from-redPrime via-redPrime to-redDark hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-redDark dark:focus:ring-redDark shadow-lg shadow-redDark/50 dark:shadow-lg dark:shadow-redPrime/80 font-medium rounded-lg text-sm px-10 py-2.5 text-center mr-2 mb-2">
+                                                  <svg class="w-5 h-5 mr-2 -ml-1"
+                                                       fill="none"
+                                                       stroke="currentColor"
+                                                       stroke-width="1.5"
+                                                       viewBox="0 0 24 24"
+                                                       xmlns="http://www.w3.org/2000/svg"
+                                                       aria-hidden="true">
+                                                       <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 15h2.25m8.024-9.75c.011.05.028.1.052.148.591 1.2.924 2.55.924 3.977a8.96 8.96 0 01-.999 4.125m.023-8.25c-.076-.365.183-.75.575-.75h.908c.889 0 1.713.518 1.972 1.368.339 1.11.521 2.287.521 3.507 0 1.553-.295 3.036-.831 4.398C20.613 14.547 19.833 15 19 15h-1.053c-.472 0-.745-.556-.5-.96a8.95 8.95 0 00.303-.54m.023-8.25H16.48a4.5 4.5 0 01-1.423-.23l-3.114-1.04a4.5 4.5 0 00-1.423-.23H6.504c-.618 0-1.217.247-1.605.729A11.95 11.95 0 002.25 12c0 .434.023.863.068 1.285C2.427 14.306 3.346 15 4.372 15h3.126c.618 0 .991.724.725 1.282A7.471 7.471 0 007.5 19.5a2.25 2.25 0 002.25 2.25.75.75 0 00.75-.75v-.633c0-.573.11-1.14.322-1.672.304-.76.93-1.33 1.653-1.715a9.04 9.04 0 002.86-2.4c.498-.634 1.226-1.08 2.032-1.08h.384">
+                                                       </path>
+                                                  </svg>
+                                                  {% translate "Unsubscribe" %}
+                                             </button>
+                                             <span class="badge badge-light text-gray-600 dark:text-yallowPrime ml-10"><strong>({{ total_likes }})</strong> {% translate "Subscribers" %}</span>
+                                        {% else %}
+                                             <button type="submit"
+                                                     name="object_id"
+                                                     value="{{ object.id }}"
+                                                     class="inline-flex items-center text-white bg-gradient-to-r from-redPrime via-redDark to-redDark hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-redDark dark:focus:ring-redDark shadow-lg shadow-redDark/50 dark:shadow-lg dark:shadow-redPrime/80 font-medium rounded-lg text-sm px-10 py-2.5 text-center mr-2 mb-2">
+                                                  <svg class="w-4 h-4 mr-2 -ml-1"
+                                                       fill="none"
+                                                       stroke="currentColor"
+                                                       stroke-width="1.5"
+                                                       viewBox="0 0 24 24"
+                                                       xmlns="http://www.w3.org/2000/svg"
+                                                       aria-hidden="true">
+                                                       <path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.5c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75A2.25 2.25 0 0116.5 4.5c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23H5.904M14.25 9h2.25M5.904 18.75c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 01-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 10.203 4.167 9.75 5 9.75h1.053c.472 0 .745.556.5.96a8.958 8.958 0 00-1.302 4.665c0 1.194.232 2.333.654 3.375z">
+                                                       </path>
+                                                  </svg>
+                                                  {% translate "Subscribe" %}
+                                             </button>
+                                             <span class="badge badge-light text-gray-600 dark:text-yallowPrime ml-10"><strong>({{ total_likes }})</strong> {% translate "Subscribers" %}</span>
+                                        {% endif %}
+                                   </form>
+                              {% else %}
+                                   <span class="badge badge-light float-right mx-5 text-gray-600 dark:text-yallowPrime ml-10">{% translate "Number of subscribers" %} <strong>({{ total_likes }})</strong></span>
+                              {% endif %}
+                         </div>
+                         {% comment %} l object event appartient au user connect pour afficher liste subscriber {% endcomment %}
+                         {% if user.is_authenticated %}
+                              {% if request.user == object.user %}
+                                   <div class="items-center mt-10 mb-5">
+                                        <a href="{% url 'subscribers' object.slug %}"
+                                           class="inline-flex items-center font-medium text-redDark dark:text-redDark hover:underline">
+                                             {% translate "List of subscribers" %}
+                                             <svg aria-hidden="true"
+                                                  class="w-5 h-5 ml-1"
+                                                  fill="currentColor"
+                                                  viewBox="0 0 20 20"
+                                                  xmlns="http://www.w3.org/2000/svg">
+                                                  <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd">
+                                                  </path>
+                                             </svg>
+                                        </a>
+                                   </div>
+                              {% endif %}
+                         {% endif %}
+                    </div>
+                    <div class="hidden md:block p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                         <div class="flow-root">
+                              <h1 class="text-xl font-semibold dark:text-white">{% translate "Events, Clubs and Shops" %}</h1>
+                              <ul class="divide-y divide-gray-200 dark:divide-gray-700">
+                                   {% for event in events %}
+                                        <li class="py-4">
+                                             <div class="flex items-center space-x-4">
+                                                  <div class="flex-shrink-0">
+                                                       <svg class="w-5 h-5 mr-2"
+                                                            fill="currentColor"
+                                                            viewBox="0 0 24 24"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            aria-hidden="true">
+                                                            <path d="M12.75 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM7.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM8.25 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM9.75 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM10.5 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM12.75 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM14.25 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 13.5a.75.75 0 100-1.5.75.75 0 000 1.5z">
+                                                            </path>
+                                                        <path clip-rule="evenodd" fill-rule="evenodd" d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v11.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6V3a.75.75 0 01.75-.75zm13.5 9a1.5 1.5 0 00-1.5-1.5H5.25a1.5 1.5 0 00-1.5 1.5v7.5a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5v-7.5z">
+                                                        </path>
+                                                       </svg>
+                                                  </div>
+                                                  <div class="flex-1 min-w-0">
+                                                       <span class="block text-base font-semibold text-gray-900 truncate dark:text-white capitalize">{{ event.name }}</span>
+                                                  </div>
+                                                  <div class="inline-flex items-center">
+                                                       <a href="{% url 'event' event.slug %}"
+                                                          class="px-3 py-2 mb-3 mr-3 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-primary-300 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">{% translate "See details" %}</a>
+                                                  </div>
+                                             </div>
+                                        </li>
+                                   {% endfor %}
+                                   {% for shop in shops %}
+                                        <li class="py-4">
+                                             <div class="flex items-center space-x-4">
+                                                  <div class="flex-shrink-0">
+                                                       <svg class="w-5 h-5 mr-2"
+                                                        fill="currentColor"
+                                                        viewBox="0 0 24 24"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        aria-hidden="true">
+                                                        <path d="M2.25 2.25a.75.75 0 000 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 00-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 000-1.5H5.378A2.25 2.25 0 017.5 15h11.218a.75.75 0 00.674-.421 60.358 60.358 0 002.96-7.228.75.75 0 00-.525-.965A60.864 60.864 0 005.68 4.509l-.232-.867A1.875 1.875 0 003.636 2.25H2.25zM3.75 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM16.5 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z">
+                                                        </path>
+                                                       </svg>
+                                                  </div>
+                                                  <div class="flex-1 min-w-0">
+                                                       <span class="block text-base font-semibold text-gray-900 truncate dark:text-white capitalize">{{ shop.name }}</span>
+                                                  </div>
+                                                  <div class="inline-flex items-center">
+                                                       <a href="{% url 'shop' shop.slug %}"
+                                                          class="px-3 py-2 mb-3 mr-3 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-primary-300 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">{% translate "See details" %}</a>
+                                                  </div>
+                                             </div>
+                                        </li>
+                                   {% endfor %}
+                                   {% for club in clubs %}
+                                        <li class="py-4">
+                                             <div class="flex items-center space-x-4">
+                                                  <div class="flex-shrink-0">
+                                                       <svg class="w-5 h-5 mr-2"
+                                                        fill="currentColor"
+                                                        viewBox="0 0 24 24"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        aria-hidden="true">
+                                                        <path clip-rule="evenodd" fill-rule="evenodd" d="M8.25 6.75a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0zM15.75 9.75a3 3 0 116 0 3 3 0 01-6 0zM2.25 9.75a3 3 0 116 0 3 3 0 01-6 0zM6.31 15.117A6.745 6.745 0 0112 12a6.745 6.745 0 016.709 7.498.75.75 0 01-.372.568A12.696 12.696 0 0112 21.75c-2.305 0-4.47-.612-6.337-1.684a.75.75 0 01-.372-.568 6.787 6.787 0 011.019-4.38z">
+                                                        </path>
+                                                        <path d="M5.082 14.254a8.287 8.287 0 00-1.308 5.135 9.687 9.687 0 01-1.764-.44l-.115-.04a.563.563 0 01-.373-.487l-.01-.121a3.75 3.75 0 013.57-4.047zM20.226 19.389a8.287 8.287 0 00-1.308-5.135 3.75 3.75 0 013.57 4.047l-.01.121a.563.563 0 01-.373.486l-.115.04c-.567.2-1.156.349-1.764.441z">
+                                                        </path>
+                                                       </svg>
+                                                  </div>
+                                                  <div class="flex-1 min-w-0">
+                                                       <span class="block text-base font-semibold text-gray-900 truncate dark:text-white capitalize">{{ club.name }}</span>
+                                                  </div>
+                                                  <div class="inline-flex items-center">
+                                                       <a href="{% url 'club' club.slug %}"
+                                                          class="px-3 py-2 mb-3 mr-3 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-primary-300 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">{% translate "See details" %}</a>
+                                                  </div>
+                                             </div>
+                                        </li>
+                                   {% endfor %}
+                              </ul>
+                         </div>
+                    </div>
+               </div>
+               <div class="col-span-2 mb-28 md:mb-5">
+                    <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                         <div class="mb-4">
+                              {% comment %} affichage de map appartir de id map {% endcomment %}
+                              <div id="map" class="h-96">
+                              </div>
+                         </div>
+                         <hr class="pb-5" />
+                         {% if request.user.is_authenticated %}
+                              {% if object.user == request.user %}
+                                   <div class="py-5">
+                                        <a class="text-white bg-gradient-to-r from-purpelPrime via-redDark to-purpelPrime hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-redDark dark:focus:ring-redDark shadow-lg shadow-redDark/50 dark:shadow-lg dark:shadow-redPrime/80 font-medium rounded-lg text-sm px-10 py-3 text-center mr-2 mb-2"
+                                           href="{% url 'update-event' request.user.username object.slug %}">{% translate "Update" %}</a>
+                                        <button data-modal-target="popup-modal"
+                                                data-modal-toggle="popup-modal"
+                                                class="text-white bg-gradient-to-r from-redPrime via-redPrime to-redDark hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-redDark dark:focus:ring-redDark shadow-lg shadow-redDark/50 dark:shadow-lg dark:shadow-redPrime/80 font-medium rounded-lg text-sm px-10 py-2.5 text-center mr-2 mb-2">
+                                             {% translate "Delete" %}
+                                        </button>
+                                   </div>
+                                   <div id="popup-modal"
+                                        tabindex="-1"
+                                        class="fixed top-0 left-0 right-0 z-50 hidden p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                                        <div class="relative w-full max-w-md max-h-full">
+                                             <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                                  <button type="button"
+                                                          class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+                                                          data-modal-hide="popup-modal">
+                                                       <svg aria-hidden="true"
+                                                            class="w-5 h-5"
+                                                            fill="currentColor"
+                                                            viewBox="0 0 20 20"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd">
+                                                            </path>
+                                                       </svg>
+                                                       <span class="sr-only">Close modal</span>
+                                                  </button>
+                                                  {% if request.user.is_authenticated %}
+                                                       <div class="p-6 text-center">
+                                                            <svg aria-hidden="true"
+                                                                 class="mx-auto mb-4 text-gray-400 w-14 h-14 dark:text-gray-200"
+                                                                 fill="none"
+                                                                 stroke="currentColor"
+                                                                 viewBox="0 0 24 24"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                                                                 </path>
+                                                            </svg>
+                                                            <span class="mb-5 text-lg font-bold text-gray-500 dark:text-gray-400">{{ object.name }}</span>
+                                                            <h1 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                                                                 {% translate "Are you sure you want to delete this event?" %}
+                                                            </h1>
+                                                            <form method="post"
+                                                                  action="{% url 'delete-event' request.user.username object.slug %}">
+                                                                 {% csrf_token %}
+                                                                 <button data-modal-hide="popup-modal"
+                                                                         type="submit"
+                                                                         class="text-white bg-gradient-to-r from-redPrime via-redPrime to-redDark hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-redDark dark:focus:ring-redDark shadow-lg shadow-redDark/50 dark:shadow-lg dark:shadow-redPrime/80 font-medium rounded-lg text-sm px-10 py-2.5 text-center mr-2 mb-2">
+                                                                      {% translate "Yes, I'm sure" %}
+                                                                 </button>
+                                                                 <button data-modal-hide="popup-modal"
+                                                                         type="button"
+                                                                         class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
+                                                                      {% translate "No, cancel" %}
+                                                                 </button>
+                                                            </form>
+                                                       </div>
+                                                  {% endif %}
+                                             </div>
+                                        </div>
+                                   </div>
+                              {% endif %}
+                         {% endif %}
+                         <div class="mb-4">
+                              <label for="id_description"
+                                     class="block mb-2  text-sm font-medium text-redPrime dark:text-yallowPrime">
+                                   {% translate "About us" %}
+                              </label>
+                              {% comment %} safe:Cela permettra d'afficher le contenu de la variable content tel qu'il est sans prendre en consideration les balises html {% endcomment %}
+                              <span class="dark:text-gray-300">{{ object.description|safe }}</span> 
+
+                         </div>
+                         <div class="mb-4">
+                              <label for="id_event_date"
+                                     class="block mb-2  text-sm font-medium text-redPrime dark:text-yallowPrime">
+                                   {% translate "Event date" %}
+                              </label>
+                              <span class="dark:text-gray-300">{{ object.event_date }}</span>
+                         </div>
+                         <div class="mx-auto">
+                              <p class="block my-2 text-sm font-medium text-gray-600 dark:text-white">
+                                   {% translate "Additional information" %}
+                              </p>
+                              <hr class="w-full h-px mb-8 bg-gray-200 border-0 dark:bg-gray-700" />
+                         </div>
+                         <div class="flex flex-col md:flex-row justify-between">
+                              <div id="minor" class="mb-4 w-full md:w-1/4">
+                                   <ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
+                                        {% if object.minor == True %}
+                                             <li class="flex items-center">
+                                                  <svg class="w-4 h-4 mr-1.5 text-green-500 dark:text-green-400 flex-shrink-0"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                                  {% translate "Authorized minor" %}
+                                             </li>
+                                        {% else %}
+                                             <li class="flex items-center">
+                                                  <svg class="w-4 h-4 mr-1.5 text-gray-400 flex-shrink-0"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                                  {% translate "Unauthorized minor" %}
+                                             </li>
+                                        {% endif %}
+                                   </ul>
+                              </div>
+                              <div id="framing_device" class="mb-4 w-full md:w-1/4">
+                                   <ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
+                                        <li class="flex items-center">
+                                             {% if object.framing_device == True %}
+                                                  <svg class="w-4 h-4 mr-1.5 text-green-500 dark:text-green-400 flex-shrink-0"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                             {% else %}
+                                                  <svg class="w-4 h-4 mr-1.5 text-gray-400 flex-shrink-0"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                             {% endif %}
+                                             {% translate "Framing device" %}
+                                        </li>
+                                   </ul>
+                              </div>
+                              <div id="camera_man" class="mb-4 w-full md:w-1/4">
+                                   <ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
+                                        <li class="flex items-center">
+                                             {% if object.camera_man == True %}
+                                                  <svg class="w-4 h-4 mr-1.5 text-green-500 dark:text-green-400 flex-shrink-0"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                             {% else %}
+                                                  <svg class="w-4 h-4 mr-1.5 text-gray-400 flex-shrink-0"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                             {% endif %}
+                                             {% translate "Camera man" %}
+                                        </li>
+                                   </ul>
+                              </div>
+                              <div id="body_protection" class="mb-4 w-full md:w-1/4">
+                                   <ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
+                                        <li class="flex items-center">
+                                             {% if object.body_protection == True %}
+                                                  <svg class="w-4 h-4 mr-1.5 text-green-500 dark:text-green-400 flex-shrink-0"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                             {% else %}
+                                                  <svg class="w-4 h-4 mr-1.5 text-gray-400 flex-shrink-0"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                             {% endif %}
+                                             {% translate "Body protection" %}
+                                        </li>
+                                   </ul>
+                              </div>
+                         </div>
+                         <div class="flex flex-col md:flex-row justify-between">
+                              <div id="helmet" class="mb-4 w-full md:w-1/4">
+                                   <ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
+                                        <li class="flex items-center">
+                                             {% if object.helmet == True %}
+                                                  <svg class="w-4 h-4 mr-1.5 text-green-500 dark:text-green-400 flex-shrink-0"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                             {% else %}
+                                                  <svg class="w-4 h-4 mr-1.5 text-gray-400 flex-shrink-0"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                             {% endif %}
+                                             {% translate "Helmet" %}
+                                        </li>
+                                   </ul>
+                              </div>
+                              <div id="safety_vest" class="mb-4 w-full md:w-1/4">
+                                   <ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
+                                        <li class="flex items-center">
+                                             {% if object.safety_vest == True %}
+                                                  <svg class="w-4 h-4 mr-1.5 text-green-500 dark:text-green-400 flex-shrink-0"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                             {% else %}
+                                                  <svg class="w-4 h-4 mr-1.5 text-gray-400 flex-shrink-0"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                             {% endif %}
+                                             {% translate "Safety vest" %}
+                                        </li>
+                                   </ul>
+                              </div>
+                              <div id="bicycle_pump" class="mb-4 w-full md:w-1/4">
+                                   <ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
+                                        <li class="flex items-center">
+                                             {% if object.bicycle_pump == True %}
+                                                  <svg class="w-4 h-4 mr-1.5 text-green-500 dark:text-green-400 flex-shrink-0"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                             {% else %}
+                                                  <svg class="w-4 h-4 mr-1.5 text-gray-400 flex-shrink-0"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                             {% endif %}
+                                             {% translate "Bicycle pump" %}
+                                        </li>
+                                   </ul>
+                              </div>
+                              <div id="good_shoes" class="mb-4 w-full md:w-1/4">
+                                   <ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
+                                        <li class="flex items-center">
+                                             {% if object.good_shoes == True %}
+                                                  <svg class="w-4 h-4 mr-1.5 text-green-500 dark:text-green-400 flex-shrink-0"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                             {% else %}
+                                                  <svg class="w-4 h-4 mr-1.5 text-gray-400 flex-shrink-0"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                             {% endif %}
+                                             {% translate "Good shoes" %}
+                                        </li>
+                                   </ul>
+                              </div>
+                         </div>
+                         <div class="flex flex-col md:flex-row justify-between">
+                              <div id="walking_stick" class="mb-4 w-full md:w-1/4">
+                                   <ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
+                                        <li class="flex items-center">
+                                             {% if object.walking_stick == True %}
+                                                  <svg class="w-4 h-4 mr-1.5 text-green-500 dark:text-green-400 flex-shrink-0"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                             {% else %}
+                                                  <svg class="w-4 h-4 mr-1.5 text-gray-400 flex-shrink-0"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                             {% endif %}
+                                             {% translate "Walking stick" %}
+                                        </li>
+                                   </ul>
+                              </div>
+                              <div id="tent" class="mb-4 w-full md:w-1/4">
+                                   <ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
+                                        <li class="flex items-center">
+                                             {% if object.tent == True %}
+                                                  <svg class="w-4 h-4 mr-1.5 text-green-500 dark:text-green-400 flex-shrink-0"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                             {% else %}
+                                                  <svg class="w-4 h-4 mr-1.5 text-gray-400 flex-shrink-0"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                             {% endif %}
+                                             {% translate "Tent" %}
+                                        </li>
+                                   </ul>
+                              </div>
+                              <div id="transport" class="mb-4 w-full md:w-1/4">
+                                   <ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
+                                        <li class="flex items-center">
+                                             {% if object.transport == True %}
+                                                  <svg class="w-4 h-4 mr-1.5 text-green-500 dark:text-green-400 flex-shrink-0"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                             {% else %}
+                                                  <svg class="w-4 h-4 mr-1.5 text-gray-400 flex-shrink-0"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                             {% endif %}
+                                             {% translate "Transport" %}
+                                        </li>
+                                   </ul>
+                              </div>
+                              <div id="anti_slip_shoes" class="mb-4 w-full md:w-1/4">
+                                   <ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
+                                        <li class="flex items-center">
+                                             {% if object.anti_slip_shoes == True %}
+                                                  <svg class="w-4 h-4 mr-1.5 text-green-500 dark:text-green-400 flex-shrink-0"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                             {% else %}
+                                                  <svg class="w-4 h-4 mr-1.5 text-gray-400 flex-shrink-0"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                             {% endif %}
+                                             {% translate "Anti slip shoes" %}
+                                        </li>
+                                   </ul>
+                              </div>
+                         </div>
+                         <div class="flex flex-col md:flex-row justify-between">
+                              <div id="snow_stick" class="mb-4 w-full md:w-1/2">
+                                   <ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
+                                        <li class="flex items-center">
+                                             {% if object.snow_stick == True %}
+                                                  <svg class="w-4 h-4 mr-1.5 text-green-500 dark:text-green-400 flex-shrink-0"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                             {% else %}
+                                                  <svg class="w-4 h-4 mr-1.5 text-gray-400 flex-shrink-0"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                             {% endif %}
+                                             {% translate "Snow stick" %}
+                                        </li>
+                                   </ul>
+                              </div>
+                              <div id="warm_and_weatherproof_clothing" class="mb-4 w-full md:w-1/2">
+                                   <ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
+                                        <li class="flex items-center">
+                                             {% if object.warm_and_weatherproof_clothing == True %}
+                                                  <svg class="w-4 h-4 mr-1.5 text-green-500 dark:text-green-400 flex-shrink-0"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                             {% else %}
+                                                  <svg class="w-4 h-4 mr-1.5 text-gray-400 flex-shrink-0"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                             {% endif %}
+                                             {% translate "Warm and weatherproof clothing" %}
+                                        </li>
+                                   </ul>
+                              </div>
+                         </div>
+                         <div class="flex flex-col md:flex-row justify-between md:space-x-2">
+                              <div id="level" class="mb-4 w-full md:w-1/2">
+                                   <ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
+                                        <li class="flex items-center">
+                                             <svg class="w-4 h-4 mr-1.5 text-gray-400 flex-shrink-0"
+                                                  fill="none"
+                                                  stroke="currentColor"
+                                                  stroke-width="1.5"
+                                                  viewBox="0 0 24 24"
+                                                  xmlns="http://www.w3.org/2000/svg"
+                                                  aria-hidden="true">
+                                                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z">
+                                                  </path>
+                                             </svg>
+                                             {% if object.level == 1 %}
+                                                  {% translate "Professional" %}
+                                             {% else %}
+                                                  {% translate "Beginner" %}
+                                             {% endif %}
+                                        </li>
+                                   </ul>
+                              </div>
+                              <div id="hiking_type" class="mb-4 w-full md:w-1/2">
+                                   <ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
+                                        <li class="flex items-center">
+                                             <i class="fa-sharp fa-light fa-person-hiking mr-1.5 text-gray-400"></i>
+                                             {% if object.hiking_type == 1 %}
+                                                  {% translate "The Stroll" %}
+                                             {% elif object.hiking_type == 2 %}
+                                                  {% translate "Long hike and trekkin" %}
+                                             {% else %}
+                                                  {% translate "Technical hiking and mountaineering" %}
+                                             {% endif %}
+                                        </li>
+                                   </ul>
+                              </div>
+                         </div>
+                         <div class="flex flex-col md:flex-row justify-between md:space-x-2">
+                              <div id="bicycle_type" class="mb-4 w-full md:w-1/2">
+                                   <ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
+                                        <li class="flex items-center">
+                                             <i class="fa-sharp fa-light fa-person-hiking mr-1.5 text-gray-400"></i>
+                                             {% if object.bicycle_type == "1" %}
+                                                  {% translate "Electric" %}
+                                             {% elif object.bicycle_type == "2" %}
+                                                  {% translate "Fatbike" %}
+                                             {% elif object.bicycle_type == "3" %}
+                                                  {% translate "Mountain" %}
+                                             {% elif object.bicycle_type == "4" %}
+                                                  {% translate "Gravel" %}
+                                             {% elif object.bicycle_type == "5" %}
+                                                  {% translate "Hybrid" %}
+                                             {% elif object.bicycle_type == "6" %}
+                                                  {% translate "Mountain" %}
+                                             {% endif %}
+                                        </li>
+                                   </ul>
+                              </div>
+                              <div id="moto_type" class="mb-4 w-full md:w-1/2">
+                                   <ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
+                                        <li class="flex items-center">
+                                             <i class="fa-sharp fa-light fa-person-hiking mr-1.5 text-gray-400"></i>
+                                             {% if object.moto_type == "1" %}
+                                                  {% translate "The supermotards" %}
+                                             {% elif object.moto_type == "2" %}
+                                                  {% translate "Sports" %}
+                                             {% elif object.moto_type == "3" %}
+                                                  {% translate "Trails" %}
+                                             {% elif object.moto_type == "4" %}
+                                                  {% translate "Roadsters" %}
+                                             {% elif object.moto_type == "5" %}
+                                                  {% translate "Road" %}
+                                             {% elif object.moto_type == "6" %}
+                                                  {% translate "125 cm3" %}
+                                             {% elif object.moto_type == "7" %}
+                                                  {% translate "Basics" %}
+                                             {% endif %}
+                                        </li>
+                                   </ul>
+                              </div>
+                         </div>
+                         <div class="flex flex-col md:flex-row justify-between md:space-x-2">
+                               <div id="authorization" class="mb-4 w-full md:w-1/2">
+                                   <ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
+                                        {% if object.authorization %}
+                                             <li class="flex items-center">
+                                                  <svg class="w-5 h-5 mr-1.5 text-gray-400"
+                                                       fill="none"
+                                                       stroke="currentColor"
+                                                       stroke-width="1.5"
+                                                       viewBox="0 0 24 24"
+                                                       xmlns="http://www.w3.org/2000/svg"
+                                                       aria-hidden="true">
+                                                       <path stroke-linecap="round" stroke-linejoin="round" d="M12 9.75v6.75m0 0l-3-3m3 3l3-3m-8.25 6a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z">
+                                                       </path>
+                                                  </svg>
+                                                  {% comment %} )permet le telechargement de l'authorization {% endcomment %}
+                                                  <a href="{{ object.authorization.url }}" download>{% translate "Authorization copie" %}</a>
+                                             </li>
+                                        {% endif %}
+                                   </ul>
+                              </div> 
+                              <div id="medical_certificate" class="mb-4 w-full md:w-1/2">
+                                   <ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
+                                        {% if object.medical_certificate %}
+                                             <li class="flex items-center">
+                                                  <svg class="w-5 h-5 mr-1.5 text-gray-400"
+                                                       fill="none"
+                                                       stroke="currentColor"
+                                                       stroke-width="1.5"
+                                                       viewBox="0 0 24 24"
+                                                       xmlns="http://www.w3.org/2000/svg"
+                                                       aria-hidden="true">
+                                                       <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m.75 12l3 3m0 0l3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z">
+                                                       </path>
+                                                  </svg>
+                                                  <a href="{{ object.medical_certificate.url }}" download>{% translate "Medical certificate copie" %}</a>
+                                             </li>
+                                        {% endif %}
+                                   </ul>
+                              </div>
+                         </div>
+                         {% comment %} create comment {% endcomment %}
+                         <div class="my-10">
+                              <div class="mx-auto">
+                                   <div class="flex justify-between items-center mb-6">
+                                        <h2 class="text-lg lg:text-2xl font-bold text-gray-600 dark:text-white">
+                                             {% translate "Discussion" %} ({{ comments_count }})
+                                        </h2>
+                                   </div>
+                              </div>
+                              {% if request.user.is_authenticated %}
+                                   <form method="post" class="mb-6">
+                                        {% csrf_token %}
+                                        <label for="id_message" class="sr-only">
+                                             {{ form.message.label }}
+                                        </label>
+                                        <div class="flex items-center px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-700">
+                                             {{ form.message }}
+                                             <button type="submit"
+                                                     class="inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600">
+                                                  <svg aria-hidden="true"
+                                                       class="w-6 h-6 rotate-90"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z">
+                                                       </path>
+                                                  </svg>
+                                             </button>
+                                        </div>
+                                   </form>
+                              {% else %}
+                                   <div class="p-6 mb-6 text-base bg-white dark:bg-gray-800">
+                                        <p class="text-gray-500 dark:text-gray-400 max-w-2xl">
+                                             {% translate "Please connect to add a comment" %}
+                                        </p>
+                                   </div>
+                              {% endif %}
+                              {% include 'event/_comment_list.html' %}
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+{% endblock content %}
+{% block extrajs %}
+     <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v1.0.0/mapbox-gl-language.js'></script>
+     <script>
+          mapboxgl.accessToken = 'pk.eyJ1IjoibWVkb25lIiwiYSI6ImNrMnEwZjJkdTA5OXozbm80ZHAwMThlcnMifQ.mjU4oz__hZLj6mkJGrRHSA';
+          const map = new mapboxgl.Map({
+               container: 'map',
+               style: 'mapbox://styles/mapbox/streets-v12',
+               center: {{ object.location | tuple_to_array }},
+               zoom: 4
+          });
+          map.on('load', function() {
+               var destination = {{ object.location | tuple_to_array }};
+               var marker = new mapboxgl.Marker()
+                 .setLngLat(destination)
+                 .addTo(map);
+               
+               var directions = new MapboxDirections({
+                 accessToken: mapboxgl.accessToken,
+                 unit: 'metric',
+                 profile: 'mapbox/cycling',
+                 controls: { instructions: true },
+                 interactive: true,
+                 steps: true,
+               });
+               
+               directions.setDestination(destination);
+               var language = new MapboxLanguage({
+                    defaultLanguage: 'fr'
+               });
+               map.addControl(directions, 'top-left', language);
+             });
+     </script>
+     {% for act in request.user.profile.activity.all %}
+          {% if act.id == 1 %}
+               <script>
+                    document.getElementById("bicycle_pump").classList.add("hidden")
+                    document.getElementById("bicycle_type").classList.add("hidden")
+                    document.getElementById("hiking_type").classList.add("hidden")
+                    document.getElementById("good_shoes").classList.add("hidden")
+                    document.getElementById("walking_stick").classList.add("hidden")
+                    document.getElementById("tent").classList.add("hidden")
+                    document.getElementById("transport").classList.add("hidden")
+                    document.getElementById("anti_slip_shoes").classList.add("hidden")
+                    document.getElementById("snow_stick").classList.add("hidden")
+                    document.getElementById("warm_and_weatherproof_clothing").classList.add("hidden")
+                    document.getElementById("medical_certificate").classList.add("hidden")
+               </script>
+          {% endif %}
+          {% if act.id == 2 %}
+               <script>
+                    document.getElementById("safety_vest").classList.add("hidden")
+                    document.getElementById("moto_type").classList.add("hidden")
+                    document.getElementById("hiking_type").classList.add("hidden")
+                    document.getElementById("good_shoes").classList.add("hidden")
+                    document.getElementById("walking_stick").classList.add("hidden")
+                    document.getElementById("tent").classList.add("hidden")
+                    document.getElementById("transport").classList.add("hidden")
+                    document.getElementById("anti_slip_shoes").classList.add("hidden")
+                    document.getElementById("snow_stick").classList.add("hidden")
+                    document.getElementById("warm_and_weatherproof_clothing").classList.add("hidden")
+                    document.getElementById("medical_certificate").classList.add("hidden")
+               </script>
+          {% endif %}
+          {% if act.id == 3 %}
+               <script>
+                    document.getElementById("framing_device").classList.add("hidden")
+                    document.getElementById("camera_man").classList.add("hidden")
+                    document.getElementById("body_protection").classList.add("hidden")
+                    document.getElementById("authorization").classList.add("hidden")
+                    document.getElementById("level").classList.add("hidden")
+                    document.getElementById("helmet").classList.add("hidden")
+                    document.getElementById("safety_vest").classList.add("hidden")
+                    document.getElementById("bicycle_pump").classList.add("hidden")
+                    document.getElementById("moto_type").classList.add("hidden")
+                    document.getElementById("bicycle_type").classList.add("hidden")
+                    document.getElementById("snow_stick").classList.add("hidden")
+                    document.getElementById("warm_and_weatherproof_clothing").classList.add("hidden")
+                    
+               </script>
+          {% endif %}
+          {% if act.id == 4 %}
+               <script>
+                    document.getElementById("framing_device").classList.add("hidden")
+                    document.getElementById("camera_man").classList.add("hidden")
+                    document.getElementById("body_protection").classList.add("hidden")
+                    document.getElementById("authorization").classList.add("hidden")
+                    document.getElementById("level").classList.add("hidden")
+                    document.getElementById("helmet").classList.add("hidden")
+                    document.getElementById("safety_vest").classList.add("hidden")
+                    document.getElementById("bicycle_pump").classList.add("hidden")
+                    document.getElementById("moto_type").classList.add("hidden")
+                    document.getElementById("bicycle_type").classList.add("hidden")
+
+                    
+                    document.getElementById("snow_stick").classList.add("hidden")
+                    document.getElementById("warm_and_weatherproof_clothing").classList.add("hidden")
+                    
+               </script>
+          {% endif %}
+          {% if act.id == 5 %}
+               <script>
+                    document.getElementById("framing_device").classList.add("hidden")
+                    document.getElementById("camera_man").classList.add("hidden")
+                    document.getElementById("body_protection").classList.add("hidden")
+                    
+                    document.getElementById("level").classList.add("hidden")
+                    document.getElementById("helmet").classList.add("hidden")
+                    document.getElementById("safety_vest").classList.add("hidden")
+                    document.getElementById("bicycle_pump").classList.add("hidden")
+                    document.getElementById("moto_type").classList.add("hidden")
+                    document.getElementById("bicycle_type").classList.add("hidden")
+
+                    document.getElementById("hiking_type").classList.add("hidden")
+                    
+                    document.getElementById("walking_stick").classList.add("hidden")
+                    document.getElementById("tent").classList.add("hidden")
+                    document.getElementById("transport").classList.add("hidden")
+                    document.getElementById("anti_slip_shoes").classList.add("hidden")
+                    document.getElementById("snow_stick").classList.add("hidden")
+                    document.getElementById("warm_and_weatherproof_clothing").classList.add("hidden")
+                    
+               </script>
+          {% endif %}
+          {% if act.id == 6 %}
+               <script>
+                    document.getElementById("framing_device").classList.add("hidden")
+                    document.getElementById("camera_man").classList.add("hidden")
+                    document.getElementById("body_protection").classList.add("hidden")
+                    document.getElementById("level").classList.add("hidden")
+                    document.getElementById("helmet").classList.add("hidden")
+                    document.getElementById("safety_vest").classList.add("hidden")
+                    document.getElementById("bicycle_pump").classList.add("hidden")
+                    document.getElementById("moto_type").classList.add("hidden")
+                    document.getElementById("bicycle_type").classList.add("hidden")
+                    document.getElementById("hiking_type").classList.add("hidden")
+                    document.getElementById("walking_stick").classList.add("hidden")
+                    document.getElementById("tent").classList.add("hidden")
+                    document.getElementById("transport").classList.add("hidden")
+                    document.getElementById("anti_slip_shoes").classList.add("hidden")
+                    document.getElementById("snow_stick").classList.add("hidden")
+                    document.getElementById("warm_and_weatherproof_clothing").classList.add("hidden")
+                    
+               </script>
+          {% endif %}
+          {% if act.id == 7 %}
+               <script>
+                    document.getElementById("framing_device").classList.add("hidden")
+                    document.getElementById("camera_man").classList.add("hidden")
+                    document.getElementById("body_protection").classList.add("hidden")
+                    document.getElementById("level").classList.add("hidden")
+                    document.getElementById("helmet").classList.add("hidden")
+                    document.getElementById("safety_vest").classList.add("hidden")
+                    document.getElementById("bicycle_pump").classList.add("hidden")
+                    document.getElementById("moto_type").classList.add("hidden")
+                    document.getElementById("bicycle_type").classList.add("hidden")
+                    document.getElementById("hiking_type").classList.add("hidden")
+                    document.getElementById("good_shoes").classList.add("hidden")
+                    document.getElementById("anti_slip_shoes").classList.add("hidden")
+                    document.getElementById("snow_stick").classList.add("hidden")
+                    document.getElementById("warm_and_weatherproof_clothing").classList.add("hidden")
+                    
+               </script>
+          {% endif %}
+     {% endfor %}
+{% endblock extrajs %}

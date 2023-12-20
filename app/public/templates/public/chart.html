@@ -1,0 +1,310 @@
+{% extends 'base/base.html' %} 
+{% load static i18n %}
+
+{% block title %}
+    {% translate "Dashboard" %}
+{% endblock title %}
+{% block content %}
+<div class="container mx-auto">
+    <div class="mb-4 col-span-full xl:mb-2">
+        <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white mb-6">{% translate "Dashboard" %}</h1>
+        <nav class="flex" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                <li class="inline-flex items-center">
+                    <a href="{% url 'home' %}"
+                       class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                        <svg aria-hidden="true"
+                             class="w-4 h-4 mr-2"
+                             fill="currentColor"
+                             viewBox="0 0 20 20"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                            </path>
+                        </svg>
+                        {% translate "Home" %}
+                    </a>
+                </li>
+                <li aria-current="page">
+                    <div class="flex items-center">
+                        <svg aria-hidden="true"
+                             class="w-6 h-6 text-gray-400"
+                             fill="currentColor"
+                             viewBox="0 0 20 20"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd">
+                            </path>
+                        </svg>
+                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">{% translate "Dashboard" %}</span>
+                    </div>
+                </li>
+            </ol>
+        </nav>
+    </div>
+    <div class="flex flex-wrap p-4 mb-24 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800 dark:text-gray-200">
+         <div class="w-full md:w-2/2 p-4">
+            <canvas id="myChart"></canvas>
+        </div>
+      
+        <div class="w-full md:w-1/2 p-4">
+            <canvas id="myChart1"></canvas>
+        </div> 
+        <div class="w-full md:w-1/2 p-4">
+            <canvas id="shopChart"></canvas>
+        </div> 
+    
+        <div class="w-full md:w-1/2 p-4">
+            <canvas id="myChart3"></canvas>
+        </div>
+      
+        <div class="w-full md:w-1/2 p-4">
+            <canvas id="percentageChart"></canvas>
+        </div>
+    </div>
+    
+    
+</div>
+    <script>
+        //nombre de shop qui ont fait une evenment 
+            var shop_labels = {{ shop_labels|safe }};
+    var shop_data = {{ shop_data|safe }};
+
+    var shop_ctx = document.getElementById('shopChart').getContext('2d');
+    var shopChart = new Chart(shop_ctx, {
+        type: 'horizontalBar', // Conserver le type de graphique en 'bar' pour un histogramme vertical
+        data: {
+            labels: shop_labels,
+            datasets: [{
+                label: 'Nombre d\'événements par shop',
+                data: shop_data,
+                backgroundColor: generateRandomColors(shop_data.length), // Utilisation de couleurs aléatoires pour chaque barre
+                borderColor: 'rgba(192, 75, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    stepSize: 1
+                },
+                x: {
+                    beginAtZero: true,
+                    stepSize: 1
+                }
+            }
+        }
+    });
+
+    function generateRandomColors(numColors) {
+        const colors = [];
+        for (let i = 0; i < numColors; i++) {
+            const r = Math.floor(Math.random() * 256);
+            const g = Math.floor(Math.random() * 256);
+            const b = Math.floor(Math.random() * 256);
+            const color = `rgb(${r}, ${g}, ${b})`;
+            colors.push(color);
+        }
+        return colors;
+    }
+
+            
+    //nombre de club qui ont une evenement
+    var labels = {{ labels|safe }};
+var data = {{ data|safe }};
+
+var ctx = document.getElementById('myChart3').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'horizontalBar',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Nombre d\'événements par club',
+            data: data,
+            backgroundColor: generateRandomColors(data.length), // Appeler la fonction generateRandomColors() pour générer les couleurs aléatoires
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        indexAxis: 'y',
+        scales: {
+            x: {
+                beginAtZero: true,
+                stepSize: 1
+            }
+        }
+    }
+});
+
+function generateRandomColors(numColors) {
+    const colors = [];
+    for (let i = 0; i < numColors; i++) {
+        const r = Math.floor(Math.random() * 256);
+        const g = Math.floor(Math.random() * 256);
+        const b = Math.floor(Math.random() * 256);
+        const color = `rgb(${r}, ${g}, ${b})`;
+        colors.push(color);
+    }
+    return colors;
+}
+//courbe nombre de subscriber par event
+$(document).ready(function () {
+    const ctx = document.getElementById("myChart").getContext("2d");
+    const eventNames = [
+        {% for name in event_names %}'{{ name }}',{% endfor %}
+    ];
+    const subscriberCounts = [
+        {% for count in subscriber_counts %}{{ count }},{% endfor %}
+    ];
+    const backgroundColors = generateRandomColors(eventNames.length);
+
+    new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: eventNames,
+            datasets: [{
+                label: "Subscriber Count",
+                data: subscriberCounts,
+                backgroundColor: backgroundColors,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
+});
+//Vous pouvez utiliser cette fonction pour générer un tableau de couleurs
+// aléatoires à utiliser dans votre graphique à barres. Chaque couleur sera une valeur RGB aléatoire.
+            function generateRandomColors(numColors) {
+                const colors = [];
+                for (let i = 0; i < numColors; i++) {
+                    const r = Math.floor(Math.random() * 256);
+                    const g = Math.floor(Math.random() * 256);
+                    const b = Math.floor(Math.random() * 256);
+                    const color = `rgb(${r}, ${g}, ${b})`;
+                    colors.push(color);
+                }
+                return colors;
+            }
+       
+        //les activites les plus utiliser par user 
+    $(document).ready(function () {
+
+        const ctx1 = document.getElementById("myChart1");//Cette ligne récupère l'élément HTML avec l'ID "myChart1" qui servira de contexte pour dessiner le graphique 
+        const nbrActValues = [
+            //Cette ligne initialise un tableau nbrActValues qui contiendra les valeurs numériques des activités. 
+            {% for item in nbr_act %}{{ item }},{% endfor %}
+        ];
+        const backgroundColors = generateRandomColors(nbrActValues.length);
+
+        new Chart(ctx1, {
+            type: "pie",
+            data: {
+                labels: [
+                    {% for item in acts %}'{{ item }}',{% endfor %}
+                ],
+                datasets: [{
+                    label: 'Activity of user',
+                    data: nbrActValues,
+                    backgroundColor: backgroundColors,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                    },
+                },
+            },
+        });
+
+        function generateRandomColors(numColors) {
+            const colors = [];
+            for (let i = 0; i < numColors; i++) {
+                const r = Math.floor(Math.random() * 256);
+                const g = Math.floor(Math.random() * 256);
+                const b = Math.floor(Math.random() * 256);
+                const color = `rgb(${r}, ${g}, ${b})`;
+                colors.push(color);
+            }
+            return colors;
+        }
+
+        //Vous pouvez utiliser cette fonction pour générer un tableau de couleurs
+// aléatoires à utiliser dans votre graphique à barres. Chaque couleur sera une valeur RGB aléatoire.
+function generateRandomColors(numColors) {
+    const colors = [];
+    for (let i = 0; i < numColors; i++) {
+        const r = Math.floor(Math.random() * 256);
+        const g = Math.floor(Math.random() * 256);
+        const b = Math.floor(Math.random() * 256);
+        const color = `rgb(${r}, ${g}, ${b})`;
+        colors.push(color);
+    }
+    return colors;
+}
+});
+
+//les activites les plus utiliser par user 
+$(document).ready(function () {
+    const ctx1 = document.getElementById("myChart1").getContext("2d");
+    const nbrActValues = [
+        {% for item in nbr_act %}{{ item }},{% endfor %}
+    ];
+    const backgroundColors = generateRandomColors(nbrActValues.length);
+
+    new Chart(ctx1, {
+        type: "pie",
+        data: {
+            labels: [
+                {% for item in acts %}'{{ item }}',{% endfor %}
+            ],
+            datasets: [{
+                label: 'Activity of user',
+                data: nbrActValues,
+                backgroundColor: backgroundColors,
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                },
+            },
+        },
+    });
+
+    function generateRandomColors(numColors) {
+        const colors = [];
+        for (let i = 0; i < numColors; i++) {
+            const r = Math.floor(Math.random() * 256);
+            const g = Math.floor(Math.random() * 256);
+            const b = Math.floor(Math.random() * 256);
+            const color = `rgb(${r}, ${g}, ${b})`;
+            colors.push(color);
+        }
+        return colors;
+    }
+
+   
+    });
+
+
+
+    
+    
+    
+
+    
+</script> 
+{% endblock %}

@@ -1,0 +1,118 @@
+{% extends "base/base.html" %}
+{% load static i18n %}
+{% block title %}
+    {% translate "About us" %}
+{% endblock title %}
+{% block content %}
+    <div class="container mx-auto">
+        <div class="grid grid-cols-1 p-2 md:p-20 xl:grid-cols-3 xl:gap-4 ">
+            <div class="mb-4 col-span-full xl:mb-2">
+                <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white mb-6">{% translate "About us" %}</h1>
+                <nav class="flex" aria-label="Breadcrumb">
+                    <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                        <li class="inline-flex items-center">
+                            <a href="{% url 'home'"
+                               class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                                <svg aria-hidden="true"
+                                     class="w-4 h-4 mr-2"
+                                     fill="currentColor"
+                                     viewBox="0 0 20 20"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                                    </path>
+                                </svg>
+                                {% translate "Home" %}
+                            </a>
+                        </li>
+                        <li aria-current="page">
+                            <div class="flex items-center">
+                                <svg aria-hidden="true"
+                                     class="w-6 h-6 text-gray-400"
+                                     fill="currentColor"
+                                     viewBox="0 0 20 20"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd">
+                                    </path>
+                                </svg>
+                                <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">{% translate "About us" %}</span>
+                            </div>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="col-span-full max-w-7xl bg-white dark:bg-gray-900">
+                <div class="p-4 mb-24 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800 dark:text-gray-200">
+                    <div class="flex flex-col lg:flex-row justify-between gap-8">
+                        <div class="w-full lg:w-5/12 flex flex-col justify-center">
+                            <h1 class="text-3xl lg:text-4xl font-bold leading-9 text-gray-800 dark:text-white pb-4">{% translate "About Us" %}</h1>
+                            <p class="font-normal text-base leading-6 text-gray-600 dark:text-white">
+                                {% blocktrans %}
+                                    The application offers a convenient and user-friendly solution for discovering and participating in sports events and joining local sports communities. It aims to encourage users to lead an active lifestyle and discover new sports activities while meeting others with similar interests.
+                                    The main features of the application include helping organisers to add clubs and shops, and creating sports events. However, the organisers must have a club or shop in order to benefit from event creation. Each organiser only has access to create one club. 
+                                    Visitors have the possibility to participate in sports events created by the organisers and to discover new sports activities by joining local clubs. They can also access the online shop to find equipment for their favourite sports activities. 
+                                {% endblocktrans %}
+                            </p>
+                        </div>
+                        <div class="w-full lg:w-8/12">
+                            <img class="h-full"
+                                 src="{% static 'src/img/about.jpg' %}"
+                                 alt="A group of People"
+                                 widht=""
+                                 height=""/>
+                        </div>
+                    </div>
+                    <div class="flex lg:flex-row flex-col justify-between gap-8 pt-12">
+                        <div class="w-full lg:w-5/12 flex flex-col justify-center">
+                            <h1 class="text-3xl lg:text-4xl font-bold leading-9 text-gray-800 dark:text-white pb-4">
+                                {% translate "Our team" %}
+                            </h1>
+                            <p class="font-normal text-base leading-6 text-gray-600 dark:text-white">
+                                {% translate "Our development team is composed of scrum master Soulef Khlfallah product owner Mohamed Aslan team developper Aziza Yousfi and Fatma Moussa." %}
+                            </p>
+                        </div>
+                        <div class="w-full lg:w-8/12 lg:pt-8">
+                            <div class="grid md:grid-cols-4 sm:grid-cols-2 grid-cols-1 lg:gap-4 shadow-lg rounded-md">
+                                <div class="p-4 pb-6 flex justify-center flex-col items-center">
+                                    <img class="md:block hidden"
+                                         src="{% static 'src/img/Soulef.png' %}"
+                                         alt="Soulef Khalfalleh Image"/>
+                                    <img class="md:hidden block"
+                                         src="{% static 'src/img/soulef.png' %}"
+                                         alt="Soulef Khalfalleh Image"/>
+                                    <p class="font-medium text-xl leading-5 text-gray-800 dark:text-white mt-4">Soulef Khalfalleh</p>
+                                </div>
+                                <div class="p-4 pb-6 flex justify-center flex-col items-center">
+                                    <img class="md:block hidden"
+                                         src="{% static 'src/img/muhammad.png' %}"
+                                         alt="Liam featued Image"/>
+                                    <img class="md:hidden block"
+                                         src="{% static 'src/img/muhammad.png' %}"
+                                         alt="Liam featued Image"/>
+                                    <p class="font-medium text-xl leading-5 text-gray-800 dark:text-white mt-4">Muhammad Aslan</p>
+                                </div>
+                                <div class="p-4 pb-6 flex justify-center flex-col items-center">
+                                    <img class="md:block hidden"
+                                         src="{% static 'src/img/aziza.png' %}"
+                                         alt="Aziza Youssfi Image"/>
+                                    <img class="md:hidden block"
+                                         src="{% static 'src/img/aziza.png' %}"
+                                         alt="Aziza Youssfi Image"/>
+                                    <p class="font-medium text-xl leading-5 text-gray-800 dark:text-white mt-4">Aziza Youssfi</p>
+                                </div>
+                                <div class="p-4 pb-6 flex justify-center flex-col items-center">
+                                    <img class="md:block hidden"
+                                         src="{% static 'src/img/fatma.png' %}"
+                                         alt="Fatma Moussa image"/>
+                                    <img class="md:hidden block"
+                                         src="{% static 'src/img/fatma.png' %}"
+                                         alt="Fatma Moussa image"/>
+                                    <p class="font-medium text-xl leading-5 text-gray-800 dark:text-white mt-4">Fatma Moussa</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

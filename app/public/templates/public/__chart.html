@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Statistiques des événements par club</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <canvas id="myChart"></canvas>
+
+    <script>
+        var labels = {{ labels|safe }};
+        var data = {{ data|safe }};
+    
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Nombre d\'événements',
+                    data: data,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        stepSize: 1
+                    }
+                }
+            }
+        });
+    
+        function generateRandomColors(numColors) {
+            const colors = [];
+            for (let i = 0; i < numColors; i++) {
+                const r = Math.floor(Math.random() * 256);
+                const g = Math.floor(Math.random() * 256);
+                const b = Math.floor(Math.random() * 256);
+                const color = `rgb(${r}, ${g}, ${b})`;
+                colors.push(color);
+            }
+            return colors;
+        }
+    </script>
+    
+</body>
+</html>
+//courbe nombre de subscriber par event
+        $(document).ready(function () {
+            const ctx = document.getElementById("myChart").getContext("2d");
+            const eventNames = [
+                {% for name in event_names %}'{{ name }}',{% endfor %}
+            ];// Cette ligne initialise un tableau eventNames qui contiendra les noms des événements. I
+            const subscriberCounts = [
+                {% for count in subscriber_counts %}{{ count }},{% endfor %}
+            ];// qui contiendra les nombres d'abonnés pour chaque événement
+            const backgroundColors = generateRandomColors(eventNames.length);
+
+            new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: eventNames,
+                    datasets: [{
+                        label: "Subscriber Count",
+                        data: subscriberCounts,
+                        backgroundColor: backgroundColors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+//Vous pouvez utiliser cette fonction pour générer un tableau de couleurs
+// aléatoires à utiliser dans votre graphique à barres. Chaque couleur sera une valeur RGB aléatoire.
+            function generateRandomColors(numColors) {
+                const colors = [];
+                for (let i = 0; i < numColors; i++) {
+                    const r = Math.floor(Math.random() * 256);
+                    const g = Math.floor(Math.random() * 256);
+                    const b = Math.floor(Math.random() * 256);
+                    const color = `rgb(${r}, ${g}, ${b})`;
+                    colors.push(color);
+                }
+                return colors;
+            }
+        });
+        //les activites les plus utiliser par user 
+    $(document).ready(function () {
+
+        const ctx1 = document.getElementById("myChart1");//Cette ligne récupère l'élément HTML avec l'ID "myChart1" qui servira de contexte pour dessiner le graphique 
+        const nbrActValues = [
+            //Cette ligne initialise un tableau nbrActValues qui contiendra les valeurs numériques des activités. 
+            {% for item in nbr_act %}{{ item }},{% endfor %}
+        ];
+        const backgroundColors = generateRandomColors(nbrActValues.length);
+
+        new Chart(ctx1, {
+            type: "pie",
+            data: {
+                labels: [
+                    {% for item in acts %}'{{ item }}',{% endfor %}
+                ],
+                datasets: [{
+                    label: 'Activity of user',
+                    data: nbrActValues,
+                    backgroundColor: backgroundColors,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                    },
+                },
+            },
+        });
+
+        function generateRandomColors(numColors) {
+            const colors = [];
+            for (let i = 0; i < numColors; i++) {
+                const r = Math.floor(Math.random() * 256);
+                const g = Math.floor(Math.random() * 256);
+                const b = Math.floor(Math.random() * 256);
+                const color = `rgb(${r}, ${g}, ${b})`;
+                colors.push(color);
+            }
+            return colors;
+        }
+
+
+       
+    });
+    // Récupérer les pourcentages totaux des événements des clubs et des shops depuis le contexte ou toute autre source de données
+    var clubPercentageTotal = {{ club_percentage_total }};
+    var shopPercentageTotal = {{ shop_percentage_total }};
+
+    // Créer le contexte du graphique
+    var ctx = document.getElementById('percentageChart').getContext('2d');
+
+    var chart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Clubs', 'Shops'],
+            datasets: [{
+                data: [clubPercentageTotal, shopPercentageTotal],
+                backgroundColor: generateRandomColors(2),  // Couleurs de fond pour les secteurs
+                borderColor: generateRandomColors(2),  // Couleurs de bordure pour les secteurs
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+
+    function generateRandomColors(numColors) {
+        const colors = [];
+        for (let i = 0; i < numColors; i++) {
+            const r = Math.floor(Math.random() * 256);
+            const g = Math.floor(Math.random() * 256);
+            const b = Math.floor(Math.random() * 256);
+            const color = `rgb(${r}, ${g}, ${b})`;
+            colors.push(color);
+        }
+        return colors;
+    }

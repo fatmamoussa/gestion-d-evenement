@@ -1,0 +1,1201 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-05-06 18:36+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: club/forms.py:16 club/templates/club/list.html:68 event/forms.py:16
+#: event/templates/event/list.html:68 shop/forms.py:15
+#: shop/templates/shop/list.html:68
+msgid "Name"
+msgstr ""
+
+#: club/forms.py:18 club/models.py:20 event/forms.py:18 event/models.py:20
+#: shop/forms.py:17 shop/models.py:19
+msgid "Description"
+msgstr ""
+
+#: club/forms.py:20 event/forms.py:20 shop/forms.py:19
+msgid "Log"
+msgstr ""
+
+#: club/forms.py:22 shop/forms.py:21
+msgid "+33 0x xx xx xx xx"
+msgstr ""
+
+#: club/forms.py:24 shop/forms.py:23
+msgid "Web site"
+msgstr ""
+
+#: club/forms.py:26 club/models.py:24 club/templates/club/club.html:93
+#: connection/forms.py:124 connection/templates/connection/profile.html:73
+#: event/templates/event/event.html:93 public/models.py:30 shop/forms.py:25
+#: shop/models.py:22 shop/templates/shop/shop.html:93
+msgid "Email"
+msgstr ""
+
+#: club/models.py:16
+msgid "Name of the club"
+msgstr ""
+
+#: club/models.py:18 event/models.py:18 shop/models.py:17
+msgid "Location"
+msgstr ""
+
+#: club/models.py:19 club/templates/club/club.html:88 event/models.py:19
+#: event/templates/event/event.html:88 shop/models.py:18
+#: shop/templates/shop/shop.html:88
+msgid "Address"
+msgstr ""
+
+#: club/models.py:22 event/models.py:22 shop/models.py:20
+msgid "Logo"
+msgstr ""
+
+#: club/models.py:23 club/templates/club/club.html:90
+#: event/templates/event/event.html:90 shop/models.py:21
+#: shop/templates/shop/shop.html:90
+msgid "Phone"
+msgstr ""
+
+#: club/models.py:25 shop/models.py:23
+msgid "Website"
+msgstr ""
+
+#: club/models.py:27 shop/models.py:24
+msgid "Instagram"
+msgstr ""
+
+#: club/models.py:29 shop/models.py:25
+msgid "Facebook"
+msgstr ""
+
+#: club/templates/club/club.html:18 club/templates/club/club.html:25
+msgid "Club:"
+msgstr ""
+
+#: club/templates/club/club.html:40 club/templates/club/list.html:24
+#: event/templates/event/event.html:40 event/templates/event/list.html:24
+#: public/templates/public/about.html:24
+#: public/templates/public/contact.html:24 public/templates/public/page.html:25
+#: shop/templates/shop/list.html:24 shop/templates/shop/shop.html:40
+#: templates/base/navbar.html:122
+msgid "Home"
+msgstr ""
+
+#: club/templates/club/club.html:56 club/templates/club/index.html:15
+#: club/templates/club/index.html:45
+msgid "Club"
+msgstr ""
+
+#: club/templates/club/club.html:96
+msgid "Club category"
+msgstr ""
+
+#: club/templates/club/club.html:104 event/templates/event/event.html:104
+#: shop/templates/shop/shop.html:104
+msgid "Latest Events, Clubs and Shops"
+msgstr ""
+
+#: club/templates/club/club.html:126 club/templates/club/club.html:151
+#: club/templates/club/club.html:174
+#: connection/templates/connection/profile.html:148
+#: connection/templates/connection/profile.html:173
+#: connection/templates/connection/profile.html:196
+#: event/templates/event/event.html:126 event/templates/event/event.html:151
+#: event/templates/event/event.html:174 shop/templates/shop/shop.html:126
+#: shop/templates/shop/shop.html:151 shop/templates/shop/shop.html:174
+#: templates/base/sidebar.html:54 templates/base/sidebar.html:79
+#: templates/base/sidebar.html:102
+msgid "See details"
+msgstr ""
+
+#: club/templates/club/club.html:194 club/templates/club/index.html:219
+#: event/templates/event/event.html:194 event/templates/event/index.html:207
+#: shop/templates/shop/index.html:219 shop/templates/shop/shop.html:194
+msgid "Update"
+msgstr ""
+
+#: club/templates/club/club.html:198 event/templates/event/event.html:198
+#: shop/templates/shop/shop.html:198
+msgid "Delete"
+msgstr ""
+
+#: club/templates/club/club.html:206 event/templates/event/event.html:206
+#: public/templates/public/about.html:4 shop/templates/shop/shop.html:206
+msgid "About us"
+msgstr ""
+
+#: club/templates/club/club.html:301 event/templates/event/event.html:301
+#: shop/templates/shop/shop.html:301
+msgid "Shop now"
+msgstr ""
+
+#: club/templates/club/club.html:367
+msgid "Are you sure you want to delete this club?"
+msgstr ""
+
+#: club/templates/club/index.html:5 club/templates/club/index.html:62
+#: club/templates/club/index.html:94
+msgid "Update Club"
+msgstr ""
+
+#: club/templates/club/index.html:7 club/templates/club/index.html:64
+#: club/templates/club/index.html:96 templates/base/navbar.html:256
+msgid "New Club"
+msgstr ""
+
+#: club/templates/club/index.html:29 connection/forms.py:23
+#: connection/models.py:57 connection/templates/connection/profile.html:99
+#: event/templates/event/index.html:29 shop/templates/shop/index.html:29
+#: templates/account/signup.html:151 templates/base/sidebar.html:20
+msgid "Organizer"
+msgstr ""
+
+#: club/templates/club/index.html:88 event/templates/event/index.html:88
+#: shop/templates/shop/index.html:88
+msgid "Warning!"
+msgstr ""
+
+#: club/templates/club/index.html:88 event/templates/event/index.html:88
+#: shop/templates/shop/index.html:88
+msgid ""
+"You don't have permission to access to this page. You are not an Organizer"
+msgstr ""
+
+#: club/templates/club/index.html:221 event/templates/event/index.html:209
+#: shop/templates/shop/index.html:221 templates/base/navbar.html:210
+msgid "Create"
+msgstr ""
+
+#: club/templates/club/list.html:4 club/templates/club/list.html:10
+#: templates/base/navbar.html:182
+msgid "All Clubs"
+msgstr ""
+
+#: club/templates/club/list.html:37
+msgid "All clubs"
+msgstr ""
+
+#: club/templates/club/list.html:69 event/templates/event/list.html:69
+#: shop/templates/shop/list.html:69
+msgid "Category"
+msgstr ""
+
+#: club/templates/club/list.html:94 event/templates/event/list.html:94
+#: shop/templates/shop/list.html:94
+msgid "See more"
+msgstr ""
+
+#: club/templates/club/list.html:103 event/templates/event/list.html:103
+#: shop/templates/shop/list.html:103
+msgid "Showing"
+msgstr ""
+
+#: club/templates/club/list.html:108 event/templates/event/list.html:108
+#: shop/templates/shop/list.html:108
+msgid "previous"
+msgstr ""
+
+#: club/templates/club/list.html:121 event/templates/event/list.html:121
+#: shop/templates/shop/list.html:121
+msgid "next"
+msgstr ""
+
+#: club/views.py:19 club/views.py:37 event/views.py:37 shop/views.py:37
+#, python-format
+msgid "%(name)s was updated successfully"
+msgstr ""
+
+#: club/views.py:73
+msgid "Your club has been deleted"
+msgstr ""
+
+#: config/settings.py:121
+msgid "English"
+msgstr ""
+
+#: config/settings.py:122
+msgid "French"
+msgstr ""
+
+#: config/settings.py:186
+msgid "Pick a location on map below"
+msgstr ""
+
+#: config/settings.py:188
+msgid "undefined address"
+msgstr ""
+
+#: connection/forms.py:16
+msgid "Select an activity"
+msgstr ""
+
+#: connection/forms.py:22 connection/models.py:56
+#: connection/templates/connection/profile.html:97
+#: templates/base/sidebar.html:18
+msgid "Participant"
+msgstr ""
+
+#: connection/forms.py:36
+msgid "username"
+msgstr ""
+
+#: connection/forms.py:38 connection/forms.py:78
+msgid "email"
+msgstr ""
+
+#: connection/forms.py:40
+msgid "password"
+msgstr ""
+
+#: connection/forms.py:42
+msgid "password again"
+msgstr ""
+
+#: connection/forms.py:48 connection/forms.py:120
+#: connection/templates/connection/profile.html:67 public/models.py:31
+msgid "First name"
+msgstr ""
+
+#: connection/forms.py:50 connection/forms.py:122
+#: connection/templates/connection/profile.html:70 public/models.py:32
+msgid "Last name"
+msgstr ""
+
+#: connection/forms.py:86 connection/forms.py:103
+msgid "Old password"
+msgstr ""
+
+#: connection/forms.py:88 connection/forms.py:105
+msgid "New password"
+msgstr ""
+
+#: connection/forms.py:90 connection/forms.py:107
+msgid "New password confirmation"
+msgstr ""
+
+#: connection/models.py:60
+msgid "Subscribe as:"
+msgstr ""
+
+#: connection/models.py:61 templates/base/sidebar.html:23
+msgid "Birthday"
+msgstr ""
+
+#: connection/models.py:63
+msgid "Profile image"
+msgstr ""
+
+#: connection/models.py:65
+msgid "Terms and condition"
+msgstr ""
+
+#: connection/templates/connection/profile.html:4
+msgid "Profile: "
+msgstr ""
+
+#: connection/templates/connection/profile.html:10
+msgid "My Profile"
+msgstr ""
+
+#: connection/templates/connection/profile.html:24
+#: connection/templates/connection/settings.html:24
+#: templates/account/password_change.html:27
+msgid "Account"
+msgstr ""
+
+#: connection/templates/connection/profile.html:37
+#: connection/templates/connection/settings.html:37
+#: templates/account/password_change.html:40
+msgid "Profile"
+msgstr ""
+
+#: connection/templates/connection/profile.html:59
+msgid "General information:"
+msgstr ""
+
+#: connection/templates/connection/profile.html:64
+msgid "Username"
+msgstr ""
+
+#: connection/templates/connection/profile.html:80
+msgid "Your birthday"
+msgstr ""
+
+#: connection/templates/connection/profile.html:86
+msgid "Edit password"
+msgstr ""
+
+#: connection/templates/connection/profile.html:95
+msgid "Account type"
+msgstr ""
+
+#: connection/templates/connection/profile.html:103
+msgid "Activity"
+msgstr ""
+
+#: connection/templates/connection/profile.html:126
+msgid "My Event | Club | Shop"
+msgstr ""
+
+#: connection/templates/connection/settings.html:4
+msgid "Profile settings: "
+msgstr ""
+
+#: connection/templates/connection/settings.html:10
+msgid "My settings"
+msgstr ""
+
+#: connection/templates/connection/settings.html:50
+#: templates/base/navbar.html:59
+msgid "Settings"
+msgstr ""
+
+#: connection/templates/connection/settings.html:59
+msgid "Update information"
+msgstr ""
+
+#: connection/templates/connection/settings.html:128
+msgid ""
+"\n"
+"                                                       <span class=\"font-"
+"semibold\">Click to upload</span> or drag and drop\n"
+"                                                  "
+msgstr ""
+
+#: connection/templates/connection/settings.html:139
+msgid "Save all"
+msgstr ""
+
+#: connection/views.py:105
+msgid "Your information has been successfully updated"
+msgstr ""
+
+#: event/models.py:16
+msgid "Name of the event"
+msgstr ""
+
+#: event/models.py:30
+msgid "authorization"
+msgstr ""
+
+#: event/models.py:33
+msgid "Professional"
+msgstr ""
+
+#: event/models.py:34
+msgid "Beginner"
+msgstr ""
+
+#: event/models.py:35
+msgid "Choose the level :"
+msgstr ""
+
+#: event/models.py:42
+msgid "The supermotards"
+msgstr ""
+
+#: event/models.py:43
+msgid "Sports"
+msgstr ""
+
+#: event/models.py:44
+msgid "Trails"
+msgstr ""
+
+#: event/models.py:45
+msgid "Roadsters"
+msgstr ""
+
+#: event/models.py:46
+msgid "Road"
+msgstr ""
+
+#: event/models.py:47
+msgid "125 cm3"
+msgstr ""
+
+#: event/models.py:48
+msgid "Basics"
+msgstr ""
+
+#: event/models.py:49
+msgid "Choose a type of motobike:"
+msgstr ""
+
+#: event/models.py:53
+msgid "Electric"
+msgstr ""
+
+#: event/models.py:54
+msgid "Fatbike"
+msgstr ""
+
+#: event/models.py:55
+msgid "Mountain"
+msgstr ""
+
+#: event/models.py:56
+msgid "Gravel"
+msgstr ""
+
+#: event/models.py:57
+msgid "Hybrid"
+msgstr ""
+
+#: event/models.py:58
+msgid "Urban"
+msgstr ""
+
+#: event/models.py:59
+msgid "Choose a type of bicycle:"
+msgstr ""
+
+#: event/models.py:63
+msgid "The Stroll"
+msgstr ""
+
+#: event/models.py:64
+msgid "Long hike and trekkin"
+msgstr ""
+
+#: event/models.py:65
+msgid "Technical hiking and mountaineering"
+msgstr ""
+
+#: event/models.py:66
+msgid "Choose a type of hiking:"
+msgstr ""
+
+#: event/models.py:68
+msgid "Good shoes"
+msgstr ""
+
+#: event/models.py:69
+msgid "Walking stick"
+msgstr ""
+
+#: event/models.py:70
+msgid "Tent"
+msgstr ""
+
+#: event/models.py:71
+msgid "Transport"
+msgstr ""
+
+#: event/models.py:72
+msgid "Anti slip shoes"
+msgstr ""
+
+#: event/models.py:73
+msgid "Snow stick"
+msgstr ""
+
+#: event/models.py:74
+msgid "Warm and weatherproof clothing"
+msgstr ""
+
+#: event/models.py:76
+msgid "Medical certificate"
+msgstr ""
+
+#: event/models.py:79 event/templates/event/event.html:56
+#: event/templates/event/index.html:15 event/templates/event/index.html:45
+msgid "Event"
+msgstr ""
+
+#: event/models.py:80
+msgid "Events"
+msgstr ""
+
+#: event/templates/event/event.html:18 event/templates/event/event.html:25
+msgid "Event:"
+msgstr ""
+
+#: event/templates/event/event.html:96
+msgid "Event category"
+msgstr ""
+
+#: event/templates/event/event.html:367 shop/templates/shop/shop.html:367
+msgid "Are you sure you want to delete this shop?"
+msgstr ""
+
+#: event/templates/event/index.html:5 event/templates/event/index.html:62
+#: event/templates/event/index.html:94
+msgid "Update Event"
+msgstr ""
+
+#: event/templates/event/index.html:7 event/templates/event/index.html:64
+#: event/templates/event/index.html:96 templates/base/navbar.html:238
+msgid "New Event"
+msgstr ""
+
+#: event/templates/event/index.html:117
+msgid "Feature image"
+msgstr ""
+
+#: event/templates/event/list.html:4 event/templates/event/list.html:10
+#: templates/base/navbar.html:164
+msgid "All Events"
+msgstr ""
+
+#: event/templates/event/list.html:37
+msgid "All events"
+msgstr ""
+
+#: event/views.py:19 shop/views.py:19
+#, python-format
+msgid "%(name)s was created successfully"
+msgstr ""
+
+#: event/views.py:73
+msgid "Your event has been deleted"
+msgstr ""
+
+#: public/forms.py:15
+msgid "Your first name"
+msgstr ""
+
+#: public/forms.py:17
+msgid "Your last name"
+msgstr ""
+
+#: public/forms.py:19
+msgid "Your subject"
+msgstr ""
+
+#: public/forms.py:21
+msgid "Your email"
+msgstr ""
+
+#: public/forms.py:23 public/models.py:34
+msgid "Message"
+msgstr ""
+
+#: public/models.py:11
+msgid "Page title"
+msgstr ""
+
+#: public/models.py:13
+msgid "Text English"
+msgstr ""
+
+#: public/models.py:14
+msgid "Text Frensh"
+msgstr ""
+
+#: public/models.py:17
+msgid "Page"
+msgstr ""
+
+#: public/models.py:18
+msgid "Pages"
+msgstr ""
+
+#: public/models.py:33
+msgid "Subject"
+msgstr ""
+
+#: public/models.py:37 templates/base/navbar.html:130
+msgid "Contact"
+msgstr ""
+
+#: public/models.py:38
+msgid "Contacts"
+msgstr ""
+
+#: public/templates/public/about.html:10 public/templates/public/about.html:37
+msgid "Ubout us"
+msgstr ""
+
+#: public/templates/public/about.html:47
+msgid "About Us"
+msgstr ""
+
+#: public/templates/public/about.html:49
+msgid ""
+"\n"
+"                                    The application offers a convenient and "
+"user-friendly solution for discovering and participating in sports events "
+"and joining local sports communities. It aims to encourage users to lead an "
+"active lifestyle and discover new sports activities while meeting others "
+"with similar interests.\n"
+"                                    The main features of the application "
+"include helping organisers to add clubs and shops, and creating sports "
+"events. However, the organisers must have a club or shop in order to benefit "
+"from event creation. Each organiser only has access to create one club. \n"
+"                                    Visitors have the possibility to "
+"participate in sports events created by the organisers and to discover new "
+"sports activities by joining local clubs. They can also access the online "
+"shop to find equipment for their favourite sports activities. \n"
+"                                "
+msgstr ""
+
+#: public/templates/public/about.html:67
+msgid "Our Story"
+msgstr ""
+
+#: public/templates/public/about.html:70
+msgid ""
+"Our development team is composed of scrum master Soulef Khlfallah product "
+"owner Mohamed Aslan team developper Aziza Yousfi and Fatma Moussa."
+msgstr ""
+
+#: public/templates/public/contact.html:4
+#: public/templates/public/contact.html:10
+#: public/templates/public/contact.html:37
+msgid "Contact us"
+msgstr ""
+
+#: public/templates/public/contact.html:113
+msgid "Send"
+msgstr ""
+
+#: public/templates/public/map.html:21
+msgid "Map"
+msgstr ""
+
+#: public/views.py:23
+msgid ""
+"Your subject is registered, Our support team will contact you in the brief "
+"date"
+msgstr ""
+
+#: shop/models.py:15
+msgid "Name of the store"
+msgstr ""
+
+#: shop/templates/shop/index.html:5 shop/templates/shop/index.html:62
+#: shop/templates/shop/index.html:94
+msgid "Update Shop"
+msgstr ""
+
+#: shop/templates/shop/index.html:7 shop/templates/shop/index.html:64
+#: shop/templates/shop/index.html:96
+msgid "New Shop"
+msgstr ""
+
+#: shop/templates/shop/index.html:15 shop/templates/shop/index.html:45
+#: shop/templates/shop/shop.html:56
+msgid "Shop"
+msgstr ""
+
+#: shop/templates/shop/list.html:4 shop/templates/shop/list.html:10
+#: templates/base/navbar.html:198
+msgid "All Shops"
+msgstr ""
+
+#: shop/templates/shop/list.html:37
+msgid "All shops"
+msgstr ""
+
+#: shop/templates/shop/shop.html:18 shop/templates/shop/shop.html:25
+msgid "Shop:"
+msgstr ""
+
+#: shop/templates/shop/shop.html:96
+msgid "Shop category"
+msgstr ""
+
+#: shop/views.py:73
+msgid "Your shop has been deleted"
+msgstr ""
+
+#: templates/account/account_inactive.html:4
+#: templates/account/account_inactive.html:7
+msgid "Account Inactive"
+msgstr ""
+
+#: templates/account/account_inactive.html:8
+msgid "This account is inactive."
+msgstr ""
+
+#: templates/account/email.html:4 templates/account/email.html:7
+msgid "E-mail Addresses"
+msgstr ""
+
+#: templates/account/email.html:9
+msgid "The following e-mail addresses are associated with your account:"
+msgstr ""
+
+#: templates/account/email.html:24
+msgid "Verified"
+msgstr ""
+
+#: templates/account/email.html:26
+msgid "Unverified"
+msgstr ""
+
+#: templates/account/email.html:29
+msgid "Primary"
+msgstr ""
+
+#: templates/account/email.html:35
+msgid "Make Primary"
+msgstr ""
+
+#: templates/account/email.html:36
+msgid "Re-send Verification"
+msgstr ""
+
+#: templates/account/email.html:37
+msgid "Remove"
+msgstr ""
+
+#: templates/account/email.html:43
+msgid "Warning:"
+msgstr ""
+
+#: templates/account/email.html:43
+msgid ""
+"You currently do not have any e-mail address set up. You should really add "
+"an e-mail address so you can receive notifications, reset your password, etc."
+msgstr ""
+
+#: templates/account/email.html:47
+msgid "Add E-mail Address"
+msgstr ""
+
+#: templates/account/email.html:51
+msgid "Add E-mail"
+msgstr ""
+
+#: templates/account/email.html:58
+msgid "Do you really want to remove the selected e-mail address?"
+msgstr ""
+
+#: templates/account/email/base_message.txt:1
+#, python-format
+msgid "Hello from %(site_name)s!"
+msgstr ""
+
+#: templates/account/email/base_message.txt:5
+#, python-format
+msgid ""
+"Thank you for using %(site_name)s!\n"
+"%(site_domain)s"
+msgstr ""
+
+#: templates/account/email/email_confirmation_message.txt:5
+#, python-format
+msgid ""
+"You're receiving this e-mail because user %(user_display)s has given your e-"
+"mail address to register an account on %(site_domain)s.\n"
+"\n"
+"To confirm this is correct, go to %(activate_url)s"
+msgstr ""
+
+#: templates/account/email/email_confirmation_subject.txt:3
+msgid "Please Confirm Your E-mail Address"
+msgstr ""
+
+#: templates/account/email/password_reset_key_message.txt:4
+msgid ""
+"You're receiving this e-mail because you or someone else has requested a "
+"password for your user account.\n"
+"It can be safely ignored if you did not request a password reset. Click the "
+"link below to reset your password."
+msgstr ""
+
+#: templates/account/email/password_reset_key_message.txt:9
+#, python-format
+msgid "In case you forgot, your username is %(username)s."
+msgstr ""
+
+#: templates/account/email/password_reset_key_subject.txt:3
+#: templates/account/email/unknown_account_subject.txt:3
+msgid "Password Reset E-mail"
+msgstr ""
+
+#: templates/account/email/unknown_account_message.txt:4
+#, python-format
+msgid ""
+"You are receiving this e-mail because you or someone else has requested a\n"
+"password for your user account. However, we do not have any record of a "
+"user\n"
+"with email %(email)s in our database.\n"
+"\n"
+"This mail can be safely ignored if you did not request a password reset.\n"
+"\n"
+"If it was you, you can sign up for an account using the link below."
+msgstr ""
+
+#: templates/account/email_confirm.html:5
+#: templates/account/email_confirm.html:8
+msgid "Confirm E-mail Address"
+msgstr ""
+
+#: templates/account/email_confirm.html:12
+#, python-format
+msgid ""
+"Please confirm that <a href=\"mailto:%(email)s\">%(email)s</a> is an e-mail "
+"address for user %(user_display)s."
+msgstr ""
+
+#: templates/account/email_confirm.html:19
+msgid "Confirm"
+msgstr ""
+
+#: templates/account/email_confirm.html:25
+#, python-format
+msgid ""
+"This e-mail confirmation link expired or is invalid. Please <a href="
+"\"%(email_url)s\">issue a new e-mail confirmation request</a>."
+msgstr ""
+
+#: templates/account/login.html:5 templates/account/login.html:9
+msgid "Sign In"
+msgstr ""
+
+#: templates/account/login.html:13
+#, python-format
+msgid ""
+"Please sign in with one\n"
+"    of your existing third party accounts. Or, <a href=\"%(signup_url)s\" "
+"class=\"inline-flex items-center font-medium text-blue-600 dark:text-"
+"blue-500 hover:underline\">sign up</a>\n"
+"    for a %(site_name)s account and sign in below:"
+msgstr ""
+
+#: templates/account/login.html:21
+msgid "or"
+msgstr ""
+
+#: templates/account/login.html:26
+#, python-format
+msgid ""
+"If you have not created an\n"
+"    account yet, then please\n"
+"    <a href=\"%(signup_url)s\" class=\"inline-flex items-center font-medium "
+"text-blue-600 dark:text-blue-500 hover:underline\">sign up</a>\n"
+"    first."
+msgstr ""
+
+#: templates/account/login.html:77 templates/base/navbar.html:72
+msgid "Sign in"
+msgstr ""
+
+#: templates/account/login.html:81
+msgid "Forgot Password?"
+msgstr ""
+
+#: templates/account/logout.html:5 templates/account/logout.html:8
+#: templates/account/logout.html:19
+msgid "Sign Out"
+msgstr ""
+
+#: templates/account/logout.html:10
+msgid "Are you sure you want to sign out?"
+msgstr ""
+
+#: templates/account/messages/cannot_delete_primary_email.txt:2
+#, python-format
+msgid "You cannot remove your primary e-mail address (%(email)s)."
+msgstr ""
+
+#: templates/account/messages/email_confirmation_sent.txt:2
+#, python-format
+msgid "Confirmation e-mail sent to %(email)s."
+msgstr ""
+
+#: templates/account/messages/email_confirmed.txt:2
+#, python-format
+msgid "You have confirmed %(email)s."
+msgstr ""
+
+#: templates/account/messages/email_deleted.txt:2
+#, python-format
+msgid "Removed e-mail address %(email)s."
+msgstr ""
+
+#: templates/account/messages/logged_in.txt:4
+#, python-format
+msgid "Successfully signed in as %(name)s."
+msgstr ""
+
+#: templates/account/messages/logged_out.txt:2
+msgid "You have signed out."
+msgstr ""
+
+#: templates/account/messages/password_changed.txt:2
+msgid "Password successfully changed."
+msgstr ""
+
+#: templates/account/messages/password_set.txt:2
+msgid "Password successfully set."
+msgstr ""
+
+#: templates/account/messages/primary_email_set.txt:2
+msgid "Primary e-mail address set."
+msgstr ""
+
+#: templates/account/messages/unverified_primary_email.txt:2
+msgid "Your primary e-mail address must be verified."
+msgstr ""
+
+#: templates/account/password_change.html:4
+#: templates/account/password_change.html:53
+#: templates/account/password_change.html:107
+msgid "Change password"
+msgstr ""
+
+#: templates/account/password_change.html:7
+#: templates/account/password_change.html:62
+#: templates/account/password_reset_from_key.html:4
+#: templates/account/password_reset_from_key.html:7
+#: templates/account/password_reset_from_key_done.html:4
+#: templates/account/password_reset_from_key_done.html:7
+msgid "Change Password"
+msgstr ""
+
+#: templates/account/password_change.html:13
+msgid "User settings"
+msgstr ""
+
+#: templates/account/password_reset.html:6
+#: templates/account/password_reset.html:10
+#: templates/account/password_reset_done.html:6
+#: templates/account/password_reset_done.html:9
+msgid "Password Reset"
+msgstr ""
+
+#: templates/account/password_reset.html:15
+msgid ""
+"Forgotten your password? Enter your e-mail address below, and we'll send you "
+"an e-mail allowing you to reset it."
+msgstr ""
+
+#: templates/account/password_reset.html:24
+msgid "Reset My Password"
+msgstr ""
+
+#: templates/account/password_reset.html:27
+msgid "Please contact us if you have any trouble resetting your password."
+msgstr ""
+
+#: templates/account/password_reset_done.html:15
+msgid ""
+"We have sent you an e-mail. If you have not received it please check your "
+"spam folder. Otherwise contact us if you do not receive it in a few minutes."
+msgstr ""
+
+#: templates/account/password_reset_from_key.html:7
+msgid "Bad Token"
+msgstr ""
+
+#: templates/account/password_reset_from_key.html:11
+#, python-format
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used.  Please request a <a href=\"%(passwd_reset_url)s\">new password reset</"
+"a>."
+msgstr ""
+
+#: templates/account/password_reset_from_key.html:16
+msgid "change password"
+msgstr ""
+
+#: templates/account/password_reset_from_key_done.html:8
+msgid "Your password is now changed."
+msgstr ""
+
+#: templates/account/password_set.html:5 templates/account/password_set.html:8
+#: templates/account/password_set.html:13
+msgid "Set Password"
+msgstr ""
+
+#: templates/account/signup.html:4
+msgid "Signup"
+msgstr ""
+
+#: templates/account/signup.html:8
+msgid "Sign Up"
+msgstr ""
+
+#: templates/account/signup.html:24
+#, python-format
+msgid ""
+"Already have an account? Then please\n"
+"  <a href=\"%(login_url)s\" class=\"inline-flex items-center font-medium "
+"text-blue-600 dark:text-blue-500 hover:underline\">\n"
+"    sign in\n"
+"  </a>\n"
+"  "
+msgstr ""
+
+#: templates/account/signup.html:111
+msgid "Select your activity"
+msgstr ""
+
+#: templates/account/signup.html:118
+msgid "You will register as"
+msgstr ""
+
+#: templates/account/signup.html:131
+msgid "Fans"
+msgstr ""
+
+#: templates/account/signup.html:136
+msgid ""
+"Registering as a fan will allow you to subscribe to all the events of your "
+"favorite activity."
+msgstr ""
+
+#: templates/account/signup.html:156
+msgid ""
+"Registering as an organizer will allow you to create clubs, stores and "
+"events. "
+msgstr ""
+
+#: templates/account/signup.html:169
+msgid "I agree with the"
+msgstr ""
+
+#: templates/account/signup.html:172
+msgid "terms and conditions"
+msgstr ""
+
+#: templates/account/signup.html:183 templates/base/navbar.html:76
+msgid "Sign up"
+msgstr ""
+
+#: templates/account/signup_closed.html:5
+#: templates/account/signup_closed.html:8
+msgid "Sign Up Closed"
+msgstr ""
+
+#: templates/account/signup_closed.html:10
+msgid "We are sorry, but the sign up is currently closed."
+msgstr ""
+
+#: templates/account/snippets/already_logged_in.html:5
+msgid "Note"
+msgstr ""
+
+#: templates/account/snippets/already_logged_in.html:5
+#, python-format
+msgid "you are already logged in as %(user_display)s."
+msgstr ""
+
+#: templates/account/verification_sent.html:5
+#: templates/account/verification_sent.html:8
+#: templates/account/verified_email_required.html:5
+#: templates/account/verified_email_required.html:8
+msgid "Verify Your E-mail Address"
+msgstr ""
+
+#: templates/account/verification_sent.html:10
+msgid ""
+"We have sent an e-mail to you for verification. Follow the link provided to "
+"finalize the signup process. If you do not see the verification e-mail in "
+"your main inbox, check your spam folder. Please contact us if you do not "
+"receive the verification e-mail within a few minutes."
+msgstr ""
+
+#: templates/account/verified_email_required.html:12
+msgid ""
+"This part of the site requires us to verify that\n"
+"you are who you claim to be. For this purpose, we require that you\n"
+"verify ownership of your e-mail address. "
+msgstr ""
+
+#: templates/account/verified_email_required.html:16
+msgid ""
+"We have sent an e-mail to you for\n"
+"verification. Please click on the link inside that e-mail. If you do not see "
+"the verification e-mail in your main inbox, check your spam folder. "
+"Otherwise\n"
+"contact us if you do not receive it within a few minutes."
+msgstr ""
+
+#: templates/account/verified_email_required.html:20
+#, python-format
+msgid ""
+"<strong>Note:</strong> you can still <a href=\"%(email_url)s\">change your e-"
+"mail address</a>."
+msgstr ""
+
+#: templates/base/base.html:78
+msgid "Message!"
+msgstr ""
+
+#: templates/base/footer.html:6
+msgid "All Rights Reserved"
+msgstr ""
+
+#: templates/base/footer.html:53
+msgid "Privacy Policy"
+msgstr ""
+
+#: templates/base/footer.html:57
+msgid "Terms & Conditions"
+msgstr ""
+
+#: templates/base/navbar.html:55
+msgid "Dashboard"
+msgstr ""
+
+#: templates/base/navbar.html:63
+msgid "Sign out"
+msgstr ""
+
+#: templates/base/navbar.html:126
+msgid "About"
+msgstr ""
+
+#: templates/base/navbar.html:136
+msgid "Search"
+msgstr ""
+
+#: templates/base/navbar.html:272
+msgid "New Store"
+msgstr ""
+
+#: templates/base/sidebar.html:25
+msgid "Age"
+msgstr ""
+
+#: templates/base/sidebar.html:32
+msgid "Latest Event | Club | Shop"
+msgstr ""
+
+#: templates/components/messages/permession.html:5
+msgid "Sorry, you don't have permission to access this page."
+msgstr ""
+
+#: templates/error/400.html:10
+msgid "Internal Server error"
+msgstr ""
+
+#: templates/error/400.html:11 templates/error/403.html:14
+#: templates/error/500.html:13
+msgid "But dont worry, you can find plenty of other things on our homepage."
+msgstr ""
+
+#: templates/error/400.html:15 templates/error/403.html:17
+#: templates/error/404.html:15 templates/error/500.html:17
+msgid "back to homepage"
+msgstr ""
+
+#: templates/error/403.html:12
+msgid "Sorry you don't have permission to access this page."
+msgstr ""
+
+#: templates/error/500.html:11
+msgid "Sorry we couldn't find this page."
+msgstr ""

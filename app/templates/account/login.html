@@ -1,0 +1,86 @@
+{% extends "account/base.html" %}
+{% load i18n %}
+{% load account socialaccount %}
+{% block head_title %}
+  {% trans "Sign In" %}
+{% endblock head_title %}
+{% block content %}
+  <div>
+    <h1 class="block mb-5 text-xl font-bold text-gray-900 dark:text-gray-300">{% trans "Sign In" %}</h1>
+    {% get_providers as socialaccount_providers %}
+    {% if socialaccount_providers %}
+      <p class="block mb-5 text-md font-medium text-gray-900 dark:text-gray-300">
+        {% blocktrans with site.name as site_name %}Please sign in with one
+    of your existing third party accounts. Or, <a href="{{ signup_url }}" class="inline-flex items-center font-medium text-blue-600 dark:text-blue-500 hover:underline">sign up</a>
+    for a {{ site_name }} account and sign in below:{% endblocktrans %}
+      </p>
+      <div class="socialaccount_ballot">
+        <ul class="socialaccount_providers">
+          {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+        </ul>
+        <div class="login-or">{% trans "or" %}</div>
+      </div>
+      {% include "socialaccount/snippets/login_extra.html" %}
+    {% else %}
+      <p class="block mb-5 text-md font-medium text-gray-900 dark:text-gray-300">
+        {% blocktrans %}If you have not created an
+    account yet, then please
+    <a href="{{ signup_url }}" class="inline-flex items-center font-medium text-blue-600 dark:text-blue-500 hover:underline">sign up</a>
+    first.{% endblocktrans %}
+      </p>
+    {% endif %}
+  </div>
+  <form class="login" method="post" action="{% url 'account_login' %}">
+    {% csrf_token %}
+    {% if form.errors %}
+      {% for field in form %}
+        {% for error in field.errors %}
+          <div class="p-4 mb-4 text-sm text-red-600 bg-green-100 rounded-lg dark:bg-green-200 dark:text-red-400">
+            <strong>{{ error|escape }}</strong>
+          </div>
+        {% endfor %}
+      {% endfor %}
+      {% for error in form.non_field_errors %}
+        <div class="p-4 mb-4 text-sm text-red-700 rounded-lg dark:text-red-400">
+          <strong>{{ error|escape }}</strong>
+        </div>
+      {% endfor %}
+    {% endif %}
+    <div class="mb-6">
+      <label for="id_login"
+             class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+        {{ form.login.label }}
+        <span class="text-red-600">*</span>
+      </label>
+      {{ form.login }}
+    </div>
+    <div class="mb-6">
+      <label for="id_password"
+             class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+        {{ form.password.label }}
+        <span class="text-red-600">*</span>
+      </label>
+      {{ form.password }}
+    </div>
+    <div class="flex items-start mb-4">
+      <label for="id_remember"
+             class="block mb-2 mr-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+        {{ form.remember.label }}
+      </label>
+      {{ form.remember }}
+    </div>
+    {% if redirect_field_value %}
+      <input type="hidden"
+             name="{{ redirect_field_name }}"
+             value="{{ redirect_field_value }}"/>
+    {% endif %}
+    <button type="submit"
+            class="text-white bg-gradient-to-r from-redPrime via-redPrime to-redDark hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-redDark dark:focus:ring-redDark shadow-lg shadow-redDark/50 dark:shadow-lg dark:shadow-redPrime/80 px-10 py-2.5 text-center mr-2 mb-2 font-medium rounded-lg text-sm w-full">
+      {% translate "Sign in" %}
+    </button>
+    <div class="mt-4 text-center">
+      <a class="button  secondaryAction inline-flex items-center font-medium text-redDark dark:text-yallowPrime hover:underline"
+         href="{% url 'account_reset_password' %}">{% translate "Forgot Password?" %}</a>
+    </div>
+  </form>
+{% endblock content %}

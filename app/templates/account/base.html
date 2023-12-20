@@ -1,0 +1,48 @@
+{% load static compress i18n %}
+{% get_current_language as language_code %}
+<!DOCTYPE html>
+<html lang="{{ language_code }}">
+  <head>
+    {% compress css %}
+      <link rel="stylesheet" href="{% static 'src/output.css' %}" />
+    {% endcompress %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="sport, event" />
+    <meta name="description" content="sport, event"/>
+    <script>
+    if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+    </script>
+    <title>Myspace -
+      {% block head_title %}
+      {% endblock head_title %}
+    </title>
+    {% block extra_head %}
+    {% endblock extra_head %}
+  </head>
+  <body class="bg-gray-100 dark:bg-gray-700 bg-wall bg-no-repeat bg-auto">
+    {% block body %}
+      {% include "base/navbar.html" %}
+      <div class="container mx-auto">
+        <div class="flex items-center justify-center h-screen">
+          <div class="block items-center p-6 max-w-7xl bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
+            {% if messages %}
+              <div class="p-4 mb-4 text-lg md:text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
+                   role="alert">
+                {% for message in messages %}<span class="font-medium">{{ message }}</span>{% endfor %}
+              </div>
+            {% endif %}
+            {% block content %}{% endblock content %}
+          </div>
+        </div>
+      </div>
+    {% endblock body %}
+    {% block extra_body %}
+    {% endblock extra_body %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.4/flowbite.min.js"></script>
+    <script src="{% static 'app/app.js' %}"></script>
+  </body>
+</html>

@@ -1,0 +1,176 @@
+{% extends "base/base.html" %}
+{% load static i18n %}
+{% block title %}
+     {% translate "Profile settings: " %}{{ user.username }}
+{% endblock title %}
+{% block content %}
+     <div class="container mx-auto">
+          <div class="grid grid-cols-1 p-2 md:p-20 xl:grid-cols-3 xl:gap-4 ">
+               <div class="mb-4 col-span-full xl:mb-2">
+                    <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white mb-6">{% translate "My settings" %}</h1>
+                    <nav class="flex" aria-label="Breadcrumb">
+                         <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                              <li class="inline-flex items-center">
+                                   <a href="{% url 'profile' request.user.username %}"
+                                      class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                                        <svg aria-hidden="true"
+                                             class="w-4 h-4 mr-2"
+                                             fill="currentColor"
+                                             viewBox="0 0 20 20"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                             <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                                             </path>
+                                        </svg>
+                                        {% translate "Account" %}
+                                   </a>
+                              </li>
+                              <li>
+                                   <div class="flex items-center">
+                                        <svg aria-hidden="true"
+                                             class="w-6 h-6 text-gray-400"
+                                             fill="currentColor"
+                                             viewBox="0 0 20 20"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                             <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd">
+                                             </path>
+                                        </svg>
+                                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">{% translate "Profile" %}</span>
+                                   </div>
+                              </li>
+                              <li aria-current="page">
+                                   <div class="flex items-center">
+                                        <svg aria-hidden="true"
+                                             class="w-6 h-6 text-gray-400"
+                                             fill="currentColor"
+                                             viewBox="0 0 20 20"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                             <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd">
+                                             </path>
+                                        </svg>
+                                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">{% translate "Settings" %}</span>
+                                   </div>
+                              </li>
+                         </ol>
+                    </nav>
+               </div>
+               {% comment %} update information {% endcomment %}
+               {% include "base/sidebar.html" %}
+               <div class="col-span-2">
+                    <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                         <h3 class="mb-4 text-xl font-semibold dark:text-white">{% translate "Update information" %}</h3>
+                         <form method="post" enctype="multipart/form-data" class="mb-20">
+                              {% csrf_token %}
+                              <div class="grid col-1 gap-6 mx-auto mb-6 md:grid-cols-2 lg:grid-cols-2 md:mt-5">
+                                   <div class="mb-4">
+                                        <label for="id_first_name"
+                                               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                             {{ f_user.first_name.label }}
+                                             <span class="text-red-600">*</span>
+                                        </label>
+                                        {{ f_user.first_name }}
+                                        {% for error in f_user.first_name.errors %}
+                                                  <p>
+                                                       <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                                  </p>
+                                        {% endfor %}
+                                   </div>
+                                   <div class="mb-4">
+                                        <label for="id_last_name"
+                                               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                             {{ f_user.last_name.label }}
+                                             <span class="text-red-600">*</span>
+                                        </label>
+                                        {{ f_user.last_name }}
+                                        {% for error in f_user.last_name.errors %}
+                                                  <p>
+                                                       <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                                  </p>
+                                        {% endfor %}
+                                   </div>
+                              </div>
+                              <div class="grid col-1 gap-6 mx-auto mb-6 md:grid-cols-2 lg:grid-cols-2 md:mt-5">
+                                   <div class="mb-4">
+                                        <label for="id_email"
+                                               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                             {{ f_user.email.label }}
+                                             <span class="text-red-600">*</span>
+                                        </label>
+                                        {{ f_user.email }}
+                                        {% for error in f_user.email.errors %}
+                                                  <p>
+                                                       <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                                  </p>
+                                        {% endfor %}
+                                   </div>
+                                   <div class="mb-4">
+                                        <label for="id_birthday"
+                                               class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                             {{ f_profile.birthday.label }}
+                                             <span class="text-red-600">*</span>
+                                        </label>
+                                        <div class="relative">
+                                             <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                                                  <svg aria-hidden="true"
+                                                       class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                                                       fill="currentColor"
+                                                       viewBox="0 0 20 20"
+                                                       xmlns="http://www.w3.org/2000/svg">
+                                                       <path fill-rule="evenodd"
+                                                       d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                                                       clip-rule="evenodd">
+                                                       </path>
+                                                  </svg>
+                                             </div>
+                                             <input datepicker
+                                                    type="text"
+                                                    name="{{ f_profile.birthday.name }}"
+                                                    id="{{ f_profile.birthday.id }}"
+                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    placeholder="Select date"
+                                                    {% if f_profile.birthday.value != None %}value="{{ f_profile.birthday.value|date:'m/d/Y' }}"{% endif %}/>
+                                                    {% for error in f_profile.birthday.errors %}
+                                                  <p>
+                                                       <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                                  </p>
+                                                  {% endfor %}
+                                        </div>
+                                   </div>
+                              </div>
+                              <div class="flex items-center justify-center w-full mb-6 text-gray-500">
+                                   <label for="id_thumbnail"
+                                          class="flex flex-col items-center justify-center w-full h-52 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                             <svg aria-hidden="true"
+                                                  class="w-10 h-10 mb-3 text-gray-400"
+                                                  fill="none"
+                                                  stroke="currentColor"
+                                                  viewBox="0 0 24 24"
+                                                  xmlns="http://www.w3.org/2000/svg">
+                                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
+                                                  </path>
+                                             </svg>
+                                             <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                                                  {% blocktrans %}
+                                                       <span class="font-semibold">Click to upload</span> or drag and drop
+                                                  {% endblocktrans %}
+                                             </p>
+                                             <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 500x500px)</p>
+                                        </div>
+                                        {{ f_profile.thumbnail }}
+                                   </label>
+                              </div>
+                              <button class="text-white bg-gradient-to-r from-redPrime via-redPrime to-redDark hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-redDark dark:focus:ring-redDark shadow-lg shadow-redDark/50 dark:shadow-lg dark:shadow-redPrime/80 font-medium rounded-lg text-sm px-10 py-2.5 text-center mr-2 mb-2"
+                                      type="submit">
+                                   {% translate "Save all" %}
+                              </button>
+                              {% comment %} <a href="{% url 'profile' request.user.username %}"class="text-white bg-gradient-to-r from-redPrime via-redPrime to-redDark hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-redDark dark:focus:ring-redDark shadow-lg shadow-redDark/50 dark:shadow-lg dark:shadow-redPrime/80 font-medium rounded-lg text-sm px-10 py-2.5 text-center mr-2 mb-2">
+                                   {% translate "cancel" %}
+                         </a> {% endcomment %}
+                              
+                         </form>
+                    </div>
+               </div>
+          </div>
+     </div>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.4/datepicker.min.js"></script>
+{% endblock content %}

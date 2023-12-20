@@ -1,0 +1,102 @@
+{% load static i18n notifications_tags %}
+{% notifications_unread as unread_count %}
+{% comment %} l'organizateur recoit des notifications apres leur identification {% endcomment %}
+{% if user.is_authenticated and request.user.profile.subscriber == "2" %}
+<button id="dropdownNotificationButton"
+        data-dropdown-toggle="dropdownNotification"
+        class="inline-flex items-center text-sm font-medium text-center text-gray-500 hover:text-gray-900 focus:outline-none dark:hover:text-white dark:text-gray-400"
+        type="button">
+     <svg class="w-6 h-6 mx-2"
+          aria-hidden="true"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg">
+          <path
+          d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z">
+          </path>
+     </svg>
+     <div class="flex relative" id="live_notif">
+          {% if unread_count %}
+               <div class="inline-flex relative -top-2 right-3 w-3 h-3 bg-red-500 rounded-full border-2 border-white dark:border-gray-900">
+               </div>
+          {% endif %}
+     </div>
+</button>
+<div id="dropdownNotification"
+     class="z-20 w-full max-w-sm bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-800 dark:divide-gray-700 hidden"
+     aria-labelledby="dropdownNotificationButton"
+     data-popper-reference-hidden=""
+     data-popper-escaped=""
+     data-popper-placement="bottom"
+     style="position: absolute;
+            inset: 0px auto auto 0px;
+            margin: 0px;
+            transform: translate3d(223px, 54px, 0px)">
+     <div class="block py-2 px-4 font-medium text-center text-gray-700 bg-gray-50 dark:bg-gray-800 dark:text-white">
+          {% translate "Notifications" %}
+     </div>
+     <div class="divide-y divide-gray-100 dark:divide-gray-700" id="notif">
+          {% comment %} max 5 notification {% endcomment %}
+          {% for notification in  request.user.notifications.unread|slice:":5" %}
+               <a href="{{ notification.url }}"
+                  class="flex py-3 px-4 hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <div class="flex-shrink-0">
+                         <div class="flex-shrink-0">
+                              <img class="rounded-full w-11 h-11"
+                                   src="{{ notification.actor.profile.thumbnail.url }}"
+                                   alt="{{ notification.actor }}">
+                              <div class="absolute flex items-center justify-center w-5 h-5 ml-6 -mt-5 bg-green-400 border border-white rounded-full dark:border-gray-800">
+                                   <svg class="w-3 h-3 text-white"
+                                        aria-hidden="true"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm1 3a1 1 0 100 2h3a1 1 0 100-2H6z" clip-rule="evenodd">
+                                        </path>
+                                   </svg>
+                              </div>
+                         </div>
+                    </div>
+                    <div class="pl-3 w-full">
+                         <div class="text-gray-500 text-sm mb-1.5 dark:text-gray-400">
+                              {% translate "Notifications from" %}
+                              <span class="font-semibold text-gray-900 dark:text-white">{{ notification.actor }}</span>:
+                              {{ notification.description }}
+                         </div>
+                         <div class="text-xs text-blue-600 dark:text-blue-500">a {{ notification.timestamp|timesince }} ago</div>
+                    </div>
+               </a>
+          {% empty %}
+               <div class="p-5 text-center">
+                    <svg class="w-6 h-6 mx-auto text-gray-500 dark:text-gray-500"
+                         fill="none"
+                         stroke="currentColor"
+                         viewBox="0 0 24 24"
+                         xmlns="http://www.w3.org/2000/svg">
+                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                         d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                         </path>
+                    </svg>
+                    <p class="text-gray-500 dark:text-gray-500">{% translate "You have no notifications" %}</p>
+               </div>
+          {% endfor %}
+     </div>
+     <a href="{% url 'notifications:mark_all_as_read' %}?next={{request.path}}"
+        class="block p-3 text-sm font-medium text-center text-gray-900 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white">
+          <div class="inline-flex items-center">
+               <svg class="mr-2 w-4 h-4 text-gray-500 dark:text-gray-400"
+                    aria-hidden="true"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
+                    <path fill-rule="evenodd"
+                    d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                    clip-rule="evenodd">
+                    </path>
+               </svg>
+               {% translate "Mark all as read" %}
+          </div>
+     </a>
+</div>
+{% endif %}

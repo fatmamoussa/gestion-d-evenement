@@ -1,0 +1,171 @@
+{% load compress static i18n notifications_tags %}
+{% get_current_language as language_code %}
+<!DOCTYPE html>
+<html lang="{{ language_code }}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords"
+          content="shop, sports goods, event, competition, gathering, festival, meeting, association, group, team, sports club, organisation, community, network, motorbike, bicycle, marathon, running, trails, snowshoeing, hiking"/>
+    <meta name="description"
+          content="The application offers a convenient and user-friendly solution for discovering and participating in sports events and joining local sports communities. It aims to encourage users to lead an active lifestyle and discover new sports activities while meeting others with similar interests. "/>
+
+    <meta name="author" content="Muhammad Aslan"/>
+    <meta name="author" content="Aziza Youssfi"/>
+    <meta name="author" content="Fatma Moussa"/>
+
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        />
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+    integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+    crossorigin="anonymous"
+></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <title>
+      Runner Out -
+      {% block title %}
+      {% endblock title %}
+    </title>
+    {% compress css %}
+      <link rel="stylesheet" href="{% static 'src/output.css' %}" />
+    {% endcompress %}
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css"/>
+    <style>
+    .fixTableHead {
+      overflow-y: auto;
+      height: 350px;
+    }
+
+    .fixTableHead thead th {
+      position: sticky;
+      top: 0;
+      background-color: #f4f6fa;
+    }
+
+    .flipped {
+      direction: rtl;
+    }
+
+    .element {
+      direction: ltr;
+    }
+    </style>
+    <script>
+     //dark mode
+    if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+    </script>
+    {% block extrahead %}
+    {% endblock extrahead %}
+  </head>
+ <body class="bg-white dark:bg-gray-900 bg-wall bg-repeat-y bg-auto"> 
+
+    <main class="mx-auto">
+      {% if messages %}
+        {% for message in messages %}
+          <div id="msg" class="{{ message.tags }} z-40" role="alert">
+            <div class="flex">
+              <div class="inline-flex flex-shrink-0 justify-center items-center w-8 h-8 text-green-500 bg-green-300 rounded-lg dark:text-green-500 dark:bg-green-900">
+                <svg aria-hidden="true"
+                     class="w-6 h-6"
+                     fill="currentColor"
+                     viewBox="0 0 24 24"
+                     xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                  </path>
+                </svg>
+                <span class="sr-only">Refresh icon</span>
+              </div>
+              <div class="ml-3 text-sm font-normal">
+                <span class="mb-1 text-sm font-semibold">{% translate "Message!" %}</span>
+                <div class="mb-2 text-sm font-normal">{{ message }}</div>
+              </div>
+              <button type="button"
+                      class="ml-auto -mx-1.5 -my-1.5 rounded-lg focus:ring-2 inline-flex h-8 w-8"
+                      data-dismiss-target="#msg"
+                      aria-label="Close">
+                <span class="sr-only">Close</span>
+                <svg aria-hidden="true"
+                     class="w-5 h-5"
+                     fill="currentColor"
+                     viewBox="0 0 20 20"
+                     xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd"
+                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                  clip-rule="evenodd">
+                  </path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+      {% include "base/navbar.html" %}
+    
+
+      {% block content %} {% include 'js.html' %}
+      <script>
+          $(document).ready(function(){
+            {% block jquery %}{% endblock %}
+          })
+      </script>
+      {% endblock %}
+      <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+      <br><br><br><br><br><br><br><br><br><br><br><br>
+
+    </main>
+    {% include "base/footer.html" %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.4/flowbite.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"></script>
+    <script src="{% static 'app/app.js' %}"></script>
+    {% block extrajs %}
+    {% endblock extrajs %}
+    <script src="{% static 'notifications/notify.js' %}" type="text/javascript"></script>
+    {% register_notify_callbacks callbacks='fill_notification_list,fill_notification_badge' %}
+    <script>
+      const msg = document.getElementById('msg');
+      if (msg) {
+        setTimeout(() => {
+          msg.style.display = 'none';
+        }, 5000);
+      }
+
+      function fill_notification_list(data) {
+        for (const notif_msg of data.unread_list) {
+          console.log(notif_msg);
+        }
+      }
+
+      $(document).ready(function () {
+        setInterval(function () {
+          $("#notif").load(window.location.href + " #notif");
+        }, 5000);
+      });
+
+      
+      
+    </script>
+    {% if request.path == '/fr/accounts/password/change/' or request.path == '/en/accounts/password/change/' %}
+      <script>
+          const sidebar = document.getElementById('sideBar');
+          sidebar.classList.add('hidden');
+      </script>
+    {% endif %}
+  </body>
+</html>

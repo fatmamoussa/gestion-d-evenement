@@ -1,0 +1,181 @@
+{% extends "base/base.html" %}
+{% load static i18n %}
+{% block extrahead %}
+    {% load mapbox_location_field_tags %}
+    {% location_field_includes %}
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css"
+          rel="stylesheet"/>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+{% endblock extrahead %}
+{% block title %}
+    {% translate "Map" %}
+{% endblock title %}
+{% block content %}
+    <div id="map" class="h-screen max-h-fit"></div>
+    <div id="menu" class="absolute md:right-5 md:top-24 bottom-32">
+        <ul class="inline-flex rounded-md shadow-sm items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            role="group">
+            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                <div class="inline-flex items-center">
+                    <input id="satellite-streets-v12"
+                           type="radio"
+                           name="rtoggle"
+                           value="satellite"
+                           class="hidden peer"/>
+                    <label for="satellite-streets-v12"
+                           class="inline-flex w-full py-3 px-6 text-sm font-medium text-gray-900 dark:text-gray-300 dark:peer-checked:text-redPrime peer-checked:border-redDark peer-checked:text-redDark">
+                        <svg class="w-5 h-5 mr-1"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.5"
+                             viewBox="0 0 24 24"
+                             xmlns="http://www.w3.org/2000/svg"
+                             aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.893 13.393l-1.135-1.135a2.252 2.252 0 01-.421-.585l-1.08-2.16a.414.414 0 00-.663-.107.827.827 0 01-.812.21l-1.273-.363a.89.89 0 00-.738 1.595l.587.39c.59.395.674 1.23.172 1.732l-.2.2c-.212.212-.33.498-.33.796v.41c0 .409-.11.809-.32 1.158l-1.315 2.191a2.11 2.11 0 01-1.81 1.025 1.055 1.055 0 01-1.055-1.055v-1.172c0-.92-.56-1.747-1.414-2.089l-.655-.261a2.25 2.25 0 01-1.383-2.46l.007-.042a2.25 2.25 0 01.29-.787l.09-.15a2.25 2.25 0 012.37-1.048l1.178.236a1.125 1.125 0 001.302-.795l.208-.73a1.125 1.125 0 00-.578-1.315l-.665-.332-.091.091a2.25 2.25 0 01-1.591.659h-.18c-.249 0-.487.1-.662.274a.931.931 0 01-1.458-1.137l1.411-2.353a2.25 2.25 0 00.286-.76m11.928 9.869A9 9 0 008.965 3.525m11.928 9.868A9 9 0 118.965 3.525">
+                            </path>
+                        </svg>
+                        <span>{% translate "Satellite" %}</span>
+                    </label>
+                </div>
+            </li>
+            <li class="w-full dark:border-gray-600">
+                <div class="inline-flex items-center">
+                    <input id="streets-v12"
+                           type="radio"
+                           name="rtoggle"
+                           value="streets"
+                           class="hidden peer"
+                           checked="checked"/>
+                    <label for="streets-v12"
+                           class="inline-flex w-full py-3 px-6 text-sm font-medium text-gray-900 dark:text-gray-300 dark:peer-checked:text-redPrime peer-checked:border-redDark peer-checked:text-redDark">
+                        <svg class="w-5 h-5 mr-1"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.5"
+                             viewBox="0 0 24 24"
+                             xmlns="http://www.w3.org/2000/svg"
+                             aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z">
+                            </path>
+                        </svg>
+                        {% translate "Streets" %}
+                    </label>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <script src="https://momentjs.com/downloads/moment-with-locales.js"></script>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoibWVkb25lIiwiYSI6ImNrMnEwZjJkdTA5OXozbm80ZHAwMThlcnMifQ.mjU4oz__hZLj6mkJGrRHSA';
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v12',
+            center: [5.15, 46.21], // [lng, lat]
+            zoom: 5
+        });
+        
+        map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+        map.addControl(new mapboxgl.FullscreenControl(), 'top-left');
+        map.addControl(
+            new mapboxgl.GeolocateControl({
+                positionOptions: {
+                    enableHighAccuracy: true
+                },
+                trackUserLocation: true,
+                showUserHeading: true
+            }), 'top-left'
+        );
+        
+        const layerList = document.getElementById('menu');
+        const inputs = layerList.getElementsByTagName('input');
+        
+        for (const input of inputs) {
+            input.onclick = (layer) => {
+                const layerId = layer.target.id;
+                map.setStyle('mapbox://styles/mapbox/' + layerId);
+            };
+        }
+        // markers list 
+        const event_data = {{ event_data|safe }};
+        console.log(event_data)
+        for (const event of event_data) {
+            const el = document.createElement('div');
+            el.className = 'marker_event';
+            const [longitude, latitude] = [event.location[0],event.location[1]];
+            const currentDate = moment().format('YYYY/MM/DD');
+            const eventDate = moment(event.date, 'DD/MM/YYYY').format('YYYY/MM/DD');
+            console.log(currentDate)
+            console.log(eventDate)
+            
+            if(currentDate <= eventDate){
+            new mapboxgl.Marker(el)
+                .setLngLat([longitude, latitude])
+                .setPopup(new mapboxgl.Popup().setHTML(
+                    '<div class="max-w-sm bg-white rounded-lg ">'+
+                        '<div class="p-5">'+
+                            '<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">'+ event.name +'</h5>'+
+                            '<p class="mb-3 font-normal text-gray-700"><strong>{% translate "Date: " %}</strong>'+ event.date +'</p>'+
+                            '<p class="mb-3 font-normal text-gray-700"><strong>{% translate "Address: " %}</strong>'+ event.address +'</p>'+
+                            '<a href="'+ event.url +'" class="inline-flex items-center text-white bg-gradient-to-r from-redPrime via-redPrime to-redDark hover:bg-gradient-to-br focus:ring-1 focus:outline-none focus:ring-redDark dark:focus:ring-redDark shadow-lg shadow-redDark/50 dark:shadow-lg dark:shadow-redPrime/80 px-3 py-2 text-center font-medium rounded-lg text-sm">'+
+                                '{% translate "View detail" %}'+
+                                '<svg aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>'+
+                            '</a>'+
+                        '</div>'+
+                    '</div>'
+                ))
+                .addTo(map);
+            }
+        }
+        
+        const shop_data = {{ shop_data | safe }};
+        for (const shop of shop_data) {
+            const el = document.createElement('div');
+            el.className = 'marker_shop';
+            const [longitude, latitude] = [shop.location[0],shop.location[1]];
+            new mapboxgl.Marker(el)
+                .setLngLat([longitude, latitude])
+                .setPopup(new mapboxgl.Popup().setHTML(
+                    '<div class="max-w-sm bg-white rounded-lg ">'+
+                        '<a href="'+ shop.url +'">'+
+                            '<img class="rounded-t-lg" src="'+ shop.thumbnail +'" alt="'+ shop.name +'" />'+
+                        '</a>'+
+                        '<div class="p-5">'+
+                            '<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">'+ shop.name +'</h5>'+
+                            '<p class="mb-3 font-normal text-gray-700"><strong>{% translate "Address: " %}</strong>'+ shop.address +'</p>'+
+                            '<a href="'+ shop.url +'" class="inline-flex items-center text-white bg-gradient-to-r from-redPrime via-redPrime to-redDark hover:bg-gradient-to-br focus:ring-1 focus:outline-none focus:ring-redDark dark:focus:ring-redDark shadow-lg shadow-redDark/50 dark:shadow-lg dark:shadow-redPrime/80 px-3 py-2 text-center font-medium rounded-lg text-sm">'+
+                                '{% translate "View detail" %}'+
+                                '<svg aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>'+
+                            '</a>'+
+                        '</div>'+
+                    '</div>'
+                ))
+                .addTo(map);
+        }
+        
+        const club_data = {{ club_data | safe }};
+        for (const club of club_data) {
+            const el = document.createElement('div');
+            el.className = 'marker_club';
+            const [longitude, latitude] = [club.location[0],club.location[1]];
+            new mapboxgl.Marker(el)
+                .setLngLat([longitude, latitude])
+                .setPopup(new mapboxgl.Popup().setHTML(
+                    '<div class="max-w-sm bg-white rounded-lg ">'+
+                        '<a href="'+ club.url +'">'+
+                            '<img class="rounded-t-lg" src="'+ club.thumbnail +'" alt="'+ club.name +'" />'+
+                        '</a>'+
+                        '<div class="p-5">'+
+                            '<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">'+ club.name +'</h5>'+
+                            '<p class="mb-3 font-normal text-gray-700"><strong>{% translate "Address: " %}</strong>'+ club.address +'</p>'+
+                            '<a href="'+ club.url +'" class="inline-flex items-center text-white bg-gradient-to-r from-redPrime via-redPrime to-redDark hover:bg-gradient-to-br focus:ring-1 focus:outline-none focus:ring-redDark dark:focus:ring-redDark shadow-lg shadow-redDark/50 dark:shadow-lg dark:shadow-redPrime/80 px-3 py-2 text-center font-medium rounded-lg text-sm">'+
+                                '{% translate "View detail" %}'+
+                                '<svg aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>'+
+                            '</a>'+
+                        '</div>'+
+                    '</div>'
+                ))
+                .addTo(map);
+        }
+        //TODO
+    </script>
+{% endblock content %}

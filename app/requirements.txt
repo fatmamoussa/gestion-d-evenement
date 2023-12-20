@@ -1,0 +1,13 @@
+Django==3.2.18
+django-allauth
+django-autoslug
+django-compressor
+django-cors-headers
+django-mapbox-location-field
+django-notifications-hq
+django-phonenumber-field
+django-tinymce
+djangorestframework
+phonenumbers
+Pillow
+sorl-thumbnail

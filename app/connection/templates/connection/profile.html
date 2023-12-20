@@ -1,0 +1,213 @@
+{% extends "base/base.html" %}
+{% load static i18n %}
+{% block title %}
+     {% translate "Profile: " %}{{ object.user.username }}
+{% endblock title %}
+{% block content %}
+     <div class="container mx-auto">
+          <div class="grid grid-cols-1 p-2 md:p-20 xl:grid-cols-3 xl:gap-4 ">
+               <div class="mb-4 col-span-full xl:mb-2">
+                    <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white mb-6">{% translate "My Profile" %}</h1>
+                    <nav class="flex" aria-label="Breadcrumb">
+                         <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                              <li class="inline-flex items-center">
+                                   <a href="{% url 'profile' request.user.username %}"
+                                      class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                                        <svg aria-hidden="true"
+                                             class="w-4 h-4 mr-2"
+                                             fill="currentColor"
+                                             viewBox="0 0 20 20"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                             <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                                             </path>
+                                        </svg>
+                                        {% translate "Account" %}
+                                   </a>
+                              </li>
+                              <li>
+                                   <div class="flex items-center">
+                                        <svg aria-hidden="true"
+                                             class="w-6 h-6 text-gray-400"
+                                             fill="currentColor"
+                                             viewBox="0 0 20 20"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                             <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd">
+                                             </path>
+                                        </svg>
+                                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">{% translate "Profile" %}</span>
+                                   </div>
+                              </li>
+                              <li aria-current="page">
+                                   <div class="flex items-center">
+                                        <svg aria-hidden="true"
+                                             class="w-6 h-6 text-gray-400"
+                                             fill="currentColor"
+                                             viewBox="0 0 20 20"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                             <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd">
+                                             </path>
+                                        </svg>
+                                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">{{ user.username }}</span>
+                                   </div>
+                              </li>
+                         </ol>
+                    </nav>
+               </div>
+               {% include "base/sidebar.html" %}
+               {% comment %} generale information {% endcomment %}
+               <div class="col-span-2">
+                    <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                         <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">{% translate "General information:" %}</h2>
+                         <div class="grid grid-cols-1 px-4 pt-6 xl:grid-cols-2 xl:gap-2">
+                              <div>
+                                   {% comment %} usernema ,first name se sont des attribu de table user {% endcomment %}
+                                   <ul class="max-w-md space-y-1 text-gray-500 list-none list-inside dark:text-gray-400">
+                                        <li>
+                                             <strong class="text-slate-700 dark:text-white">{% translate "Username" %}</strong>: {{ object.user.username }}
+                                        </li>
+                                        <li>
+                                             <strong class="text-slate-700 dark:text-white">{% translate "First name" %}</strong>: {{ object.user.first_name }}
+                                        </li>
+                                        <li>
+                                             <strong class="text-slate-700 dark:text-white">{% translate "Last name" %}</strong>: {{ object.user.last_name }}
+                                        </li>
+                                        <li>
+                                             <strong class="text-slate-700 dark:text-white">{% translate "Email" %}</strong>:
+                                             <a href="mailto:{{ object.user.email }}"
+                                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                                  {{ object.user.email }}
+                                             </a>
+                                        </li>
+                                        <li>
+                                             <strong class="text-slate-700 dark:text-white">{% translate "Your birthday" %}</strong>: {{ object.birthday }}
+                                        </li> 
+                                        <li>
+                                             <div class="my-10">
+                                                  <a href="{% url 'account_change_password' %}"
+                                                     class="text-white bg-gradient-to-r from-redPrime via-redPrime to-redDark hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-redDark dark:focus:ring-redDark shadow-lg shadow-redDark/50 dark:shadow-lg dark:shadow-redPrime/80 font-medium rounded-lg text-sm px-10 py-2.5 text-center mr-2 mb-2">
+                                                       {% translate "Edit password" %}
+                                                  </a>
+                                             </div>
+                                        </li>
+                                   </ul>
+                              </div>
+                              <div class="mb-20">
+                                   <ul class="max-w-md space-y-1 text-gray-500 list-none list-inside dark:text-gray-400">
+                                        <li>
+                                             <strong class="text-slate-700 dark:text-white">{% translate "Account type" %}</strong>:
+                                             {% if object.subscriber == '1' %}
+                                                  {% translate "Participant" %}
+                                             {% else %}
+                                                  {% translate "Organizer" %}
+                                             {% endif %}
+                                        </li>
+                                        <li>
+                                             <strong class="text-slate-700 dark:text-white">{% translate "Activity" %}</strong>
+                                             <hr class="my-2" />
+                                             {% for activity in object.activity.all %}
+                                                  <ol class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
+                                                       <li class="flex items-center">
+                                                            <svg class="w-4 h-4 mr-1.5 text-green-500 dark:text-green-400 flex-shrink-0"
+                                                                 fill="currentColor"
+                                                                 viewBox="0 0 20 20"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd">
+                                                                 </path>
+                                                            </svg>
+                                                            {{ activity }}
+                                                       </li>
+                                                  </ol>
+                                             {% endfor %}
+                                        </li>
+                                   </ul>
+                              </div>
+                         </div>
+                    </div>
+                    {% comment %} les club shop event cree par user {% endcomment %}
+                    {% if request.user.profile.subscriber == "2" %}
+                    <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                         <div class="flow-root">
+                              <h3 class="text-xl font-semibold dark:text-white">{% translate "My Event | Club | Shop" %}</h3>
+                              <ul class="divide-y divide-gray-200 dark:divide-gray-700">
+                                   {% for event in user_events %}
+                                        <li class="py-4">
+                                             <div class="flex items-center space-x-4">
+                                                  <div class="flex-shrink-0">
+                                                       <svg class="w-5 h-5 mr-2"
+                                                            fill="currentColor"
+                                                            viewBox="0 0 24 24"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            aria-hidden="true">
+                                                            <path d="M12.75 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM7.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM8.25 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM9.75 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM10.5 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM12.75 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM14.25 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 17.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 15.75a.75.75 0 100-1.5.75.75 0 000 1.5zM15 12.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM16.5 13.5a.75.75 0 100-1.5.75.75 0 000 1.5z">
+                                                            </path>
+                                                            <path clip-rule="evenodd" fill-rule="evenodd" d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v11.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6V3a.75.75 0 01.75-.75zm13.5 9a1.5 1.5 0 00-1.5-1.5H5.25a1.5 1.5 0 00-1.5 1.5v7.5a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5v-7.5z">
+                                                            </path>
+                                                       </svg>
+                                                  </div>
+                                                  <div class="flex-1 min-w-0">
+                                                       <span class="block text-base font-semibold text-gray-900 truncate dark:text-white capitalize">{{ event.name }}</span>
+                                                  </div>
+                                                  <div class="inline-flex items-center">
+                                                       <a href="{% url 'event' event.slug %}"
+                                                          class="px-3 py-2 mb-3 mr-3 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-primary-300 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">{% translate "See details" %}</a>
+                                                  </div>
+                                             </div>
+                                        </li>
+                                   {% endfor %}
+                                   {% for shop in user_shops %}
+                                        <li class="py-4">
+                                             <div class="flex items-center space-x-4">
+                                                  <div class="flex-shrink-0">
+                                                       <svg class="w-5 h-5 mr-2"
+                                                            fill="currentColor"
+                                                            viewBox="0 0 24 24"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            aria-hidden="true">
+                                                            <path d="M2.25 2.25a.75.75 0 000 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 00-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 000-1.5H5.378A2.25 2.25 0 017.5 15h11.218a.75.75 0 00.674-.421 60.358 60.358 0 002.96-7.228.75.75 0 00-.525-.965A60.864 60.864 0 005.68 4.509l-.232-.867A1.875 1.875 0 003.636 2.25H2.25zM3.75 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM16.5 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z">
+                                                            </path>
+                                                       </svg>
+                                                  </div>
+                                                  <div class="flex-1 min-w-0">
+                                                       <span class="block text-base font-semibold text-gray-900 truncate dark:text-white capitalize">{{ shop.name }}</span>
+                                                  </div>
+                                                  <div class="inline-flex items-center">
+                                                       <a href="{% url 'shop' shop.slug %}"
+                                                          class="px-3 py-2 mb-3 mr-3 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-primary-300 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">{% translate "See details" %}</a>
+                                                  </div>
+                                             </div>
+                                        </li>
+                                   {% endfor %}
+                                   {% for club in user_clubs %}
+                                        <li class="py-4">
+                                             <div class="flex items-center space-x-4">
+                                                  <div class="flex-shrink-0">
+                                                       <svg class="w-5 h-5 mr-2"
+                                                        fill="currentColor"
+                                                        viewBox="0 0 24 24"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        aria-hidden="true">
+                                                        <path clip-rule="evenodd" fill-rule="evenodd" d="M8.25 6.75a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0zM15.75 9.75a3 3 0 116 0 3 3 0 01-6 0zM2.25 9.75a3 3 0 116 0 3 3 0 01-6 0zM6.31 15.117A6.745 6.745 0 0112 12a6.745 6.745 0 016.709 7.498.75.75 0 01-.372.568A12.696 12.696 0 0112 21.75c-2.305 0-4.47-.612-6.337-1.684a.75.75 0 01-.372-.568 6.787 6.787 0 011.019-4.38z">
+                                                        </path>
+                                                        <path d="M5.082 14.254a8.287 8.287 0 00-1.308 5.135 9.687 9.687 0 01-1.764-.44l-.115-.04a.563.563 0 01-.373-.487l-.01-.121a3.75 3.75 0 013.57-4.047zM20.226 19.389a8.287 8.287 0 00-1.308-5.135 3.75 3.75 0 013.57 4.047l-.01.121a.563.563 0 01-.373.486l-.115.04c-.567.2-1.156.349-1.764.441z">
+                                                        </path>
+                                                       </svg>
+                                                  </div>
+                                                  <div class="flex-1 min-w-0">
+                                                       <span class="block text-base font-semibold text-gray-900 truncate dark:text-white capitalize">{{ club.name }}</span>
+                                                  </div>
+                                                  <div class="inline-flex items-center">
+                                                       <a href="{% url 'club' club.slug %}"
+                                                          class="px-3 py-2 mb-3 mr-3 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-primary-300 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">{% translate "See details" %}</a>
+                                                  </div>
+                                             </div>
+                                        </li>
+                                   {% endfor %}
+                              </ul>
+                         </div>
+                    </div>
+                    {% endif %}
+                    
+               </div>
+          </div>
+     </div>
+{% endblock content %}

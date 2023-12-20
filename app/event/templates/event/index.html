@@ -1,0 +1,704 @@
+
+{% extends "base/base.html" %}
+{% comment %} static i18n permet la translation {% endcomment %}
+{% load static i18n mapbox_location_field_tags %}
+{% block title %}
+     {% if object %}
+          {% translate "Update Event" %}
+     {% else %}
+          {% translate "New Event" %}
+     {% endif %}
+{% endblock title %}
+{% block content %}
+     {% location_field_includes %}
+     {% comment %} l'utilisateur a un club or shop ' {% endcomment %}
+     {% if request.user.club_set.all or request.user.shop_set.all %} 
+     <div class="container mx-auto">
+          <div class="grid grid-cols-1 p-2 lg:p-20 xl:grid-cols-3 xl:gap-4 ">
+               <div class="mb-4 col-span-full xl:mb-2">
+                    <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white mb-6">{% translate "Event" %}</h1>
+                    <nav class="flex" aria-label="Breadcrumb">
+                         <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                              {% comment %} permet de consulter le profile de l'utilisateur connecter  {% endcomment %}
+                              <li class="inline-flex items-center">
+                              <a href="{% url 'profile' request.user.username %}" 
+                                      class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                                        <svg aria-hidden="true"
+                                             class="w-4 h-4 mr-2"
+                                             fill="currentColor"
+                                             viewBox="0 0 20 20"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                             <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                                             </path>
+                                        </svg>
+                                        {% comment %} code de menu organizer ,event {% endcomment %}
+                                     {% translate "Organizer" %} 
+                                   </a>
+                              </li>
+                              <li> 
+                                   <div class="flex items-center">
+                                        <svg aria-hidden="true"
+                                             class="w-6 h-6 text-gray-400"
+                                             fill="currentColor"
+                                             viewBox="0 0 20 20"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                             <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd">
+                                             </path>
+                                        </svg>
+                                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">
+                                             <a href="{% url 'home' %}"
+                                                class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                                                  {% translate "Event" %}
+                                             </a>
+                                        </span>
+                                   </div>
+                              </li>
+                              <li aria-current="page">
+                                   <div class="flex items-center">
+                                        <svg aria-hidden="true"
+                                             class="w-6 h-6 text-gray-400"
+                                             fill="currentColor"
+                                             viewBox="0 0 20 20"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                             <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd">
+                                             </path>
+                                        </svg>
+                                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">
+                                             {% if object %}
+                                                  {% translate "Update Event" %}
+                                             {% else %}
+                                                  {% translate "New Event" %}
+                                             {% endif %}
+                                        </span>
+                                   </div>
+                              </li>
+                         </ol>
+                    </nav>
+               </div>
+               <div class="hidden xl:block">{% include "base/sidebar.html" %}</div>
+               <div class="col-span-2">
+                    <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                         {% if request.user.profile.subscriber == "1" %}
+                         {% comment %} seulement l organizateur a le droit d acceder au create et update {% endcomment %}
+                              {% include 'components/messages/permession.html' %}
+                         {% else %}
+                              <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+                                   {% if object %}
+                                        {% translate "Update Event" %}
+                                   {% else %}
+                                        {% translate "New Event" %}
+                                   {% endif %}
+                              </h2>
+                              <form method="post" enctype="multipart/form-data" class="py-10 mb-20">
+                                   {% csrf_token %}
+                                   {% comment %}  est une attaque qui exploite la confiance accordée par un site à un utilisateur authentifié. 
+                                    Django cerifie la securite pour s'assurer que la requête provient du site attendu et non d'un site malveillant. {% endcomment %}
+
+
+                                   <div class="mb-4">
+                                        <label for="{{ form.club_or_shop.id_for_label }}" class="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white">
+                                          {{ form.club_or_shop.label }}
+                                          <span class="text-red-600">*</span>
+                                        </label>
+                                        {{ form.club_or_shop }}
+                                        {% for error in form.club_or_shop.errors %}
+                                          <p>
+                                            <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                          </p>
+                                        {% endfor %}
+                                      </div>
+                                      
+                                      
+                                   <div class="mb-4">
+                                        <label for="id_name"
+                                               class="block mb-2  text-sm font-medium text-gray-600 dark:text-white">
+                                             {{ form.name.label }}
+                                             <span class="text-red-600">*</span>
+                                        </label>
+                                        {{ form.name }}
+                                        {% for error in form.name.errors %}
+                                             <p>
+                                                  <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                             </p>
+                                        {% endfor %}
+                                   </div>
+
+
+                                   <div class="flex flex-col md:flex-row justify-between space-x-2">
+                                        <div class="mb-4 w-full md:w-1/3">
+                                             <label for="id_max_subscriber"
+                                                    class="block mb-2 text-sm font-medium text-gray-600 dark:text-white">
+                                                  {{ form.max_subscriber.label }}   
+                                                      <span class="text-red-600">*</span>
+                                             </label>
+                                             {{ form.max_subscriber }}
+                                             {% for error in form.max_subscriber.errors %}
+                                                  <p>
+                                                       <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                                  </p>
+                                             {% endfor %}
+                                        </div>
+
+
+
+                                        <div class="mb-4 w-full md:w-1/3">
+                                             <label for="id_event_date"
+                                                    class="block mb-2 text-sm font-medium text-gray-600 dark:text-white">
+                                                  {{ form.event_date.label }}
+                                                  <span class="text-red-600">*</span>
+                                             </label>
+                                             <div class="relative">
+                                                  <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                                                       <svg aria-hidden="true"
+                                                            class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                                                            fill="currentColor"
+                                                            viewBox="0 0 20 20"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path fill-rule="evenodd"
+                                                            d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                                                            clip-rule="evenodd">
+                                                            </path>
+                                                       </svg>
+                                                  </div>
+
+
+
+
+                                                  <input datepicker
+                                                         type="text"
+                                                         name="{{ form.event_date.name }}"
+                                                         id="{{ form.event_date.id }}" 
+                                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                         placeholder='{% translate "Select date" %}'
+                                                         {% if form.event_date.value != None %} value="{{ form.event_date.value|date:'d/m/Y' }}"
+                                                         {% endif %}/>
+                                                         {% for error in form.event_date.errors %}
+                                                         <p>
+                                                              <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                                         </p>
+                                                         {% endfor %}
+                                                        
+                                             </div>
+
+
+
+
+                                         
+                                        </div>
+                                        <div class="mb-4 w-full md:w-1/3 dark:text-gray-200">
+                                             <label for="id_thumbnail"
+                                                    class="block mb-2  text-sm font-medium text-gray-600 dark:text-white">
+                                                  {{ form.thumbnail.label }}
+                                                 
+                                             </label>
+                                             {{ form.thumbnail }}
+                                             {% for error in form.thumbnail.errors %}
+                                                  <p>
+                                                       <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                                  </p>
+                                             {% endfor %}
+                                        </div>
+                                   </div>
+                                   <div class="mb-4">
+                                        <label for="id_location"
+                                               class="block mb-2  text-sm font-medium text-gray-600 dark:text-white">
+                                             {{ form.location.label }}
+                                             <span class="text-red-600">*</span>
+                                        </label>
+                                        {{ form.location }}
+                                        {{ form.address }}
+                                        {% for error in form.location.errors %}
+                                             <p>
+                                                  <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                             </p>
+                                        {% endfor %}
+                                   </div>
+                                 <div class="mb-4">
+                                        <label for="id_description"
+                                               class="block mb-2  text-sm font-medium text-gray-600 dark:text-white">
+                                             {{ form.description.label }}
+                                             <span class="text-red-600">*</span>
+                                        </label>
+                                        {{ form.description }}
+                                        {% for error in form.description.errors %}
+                                             <p>
+                                                  <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                             </p>
+                                        {% endfor %}
+                                   </div> 
+                                   <div class="mx-auto">
+                                        <p class="block my-2 text-sm font-medium text-gray-600 dark:text-white">{% translate "Additional information" %}</p>
+                                        <hr class="w-full h-px mb-8 bg-gray-200 border-0 dark:bg-gray-700" />
+                                   </div>
+                                   <div class="flex flex-col md:flex-row justify-between">
+                                        <div id="minor" class="mb-4 w-full md:w-1/4">
+                                             <label for="id_minor"
+                                                    class="relative inline-flex items-center mb-4 cursor-pointer">
+                                                  {{ form.minor }}
+                                                  <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                                                  </div>
+                                                  <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.minor.label }}</span>
+                                             </label>
+                                             {% for error in form.minor.errors %}
+                                                  <p>
+                                                       <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                                  </p>
+                                             {% endfor %}
+                                        </div>
+                                        <div id="framing_device" class="mb-4 w-full md:w-1/4">
+                                             <label for="id_framing_device"
+                                                    class="relative inline-flex items-center mb-4 cursor-pointer">
+                                                  {{ form.framing_device }}
+                                                  <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                                                  </div>
+                                                  <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.framing_device.label }}</span>
+                                             </label>
+                                             {% for error in form.framing_device.errors %}
+                                                  <p>
+                                                       <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                                  </p>
+                                             {% endfor %}
+                                        </div>
+                                        <div id="camera_man" class="mb-4 w-full md:w-1/4">
+                                             <label for="id_camera_man"
+                                                    class="relative inline-flex items-center mb-4 cursor-pointer">
+                                                  {{ form.camera_man }}
+                                                  <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                                                  </div>
+                                                  <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.camera_man.label }}</span>
+                                             </label>
+                                             {% for error in form.camera_man.errors %}
+                                                  <p>
+                                                       <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                                  </p>
+                                             {% endfor %}
+                                        </div>
+                                        <div id="body_protection" class="mb-4 w-full md:w-1/4">
+                                             <label for="id_body_protection"
+                                                    class="relative inline-flex items-center mb-4 cursor-pointer">
+                                                  {{ form.body_protection }}
+                                                  <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                                                  </div>
+                                                  <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.body_protection.label }}</span>
+                                             </label>
+                                             {% for error in form.body_protection.errors %}
+                                                  <p>
+                                                       <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                                  </p>
+                                             {% endfor %}
+                                        </div>
+                                   </div>
+                                   <div class="flex flex-col md:flex-row justify-between">
+                                        <div id="helmet" class="mb-4 w-full md:w-1/4">
+                                             <label for="id_helmet"
+                                                    class="relative inline-flex items-center mb-4 cursor-pointer">
+                                                  {{ form.helmet }}
+                                                  <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                                                  </div>
+                                                  <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.helmet.label }}</span>
+                                             </label>
+                                             {% for error in form.helmet.errors %}
+                                                  <p>
+                                                       <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                                  </p>
+                                             {% endfor %}
+                                        </div>
+                                        <div id="safety_vest" class="mb-4 w-full md:w-1/4">
+                                             <label for="id_safety_vest"
+                                                    class="relative inline-flex items-center mb-4 cursor-pointer">
+                                                  {{ form.safety_vest }}
+                                                  <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                                                  </div>
+                                                  <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.safety_vest.label }}</span>
+                                             </label>
+                                             {% for error in form.safety_vest.errors %}
+                                                  <p>
+                                                       <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                                  </p>
+                                             {% endfor %}
+                                        </div>
+                                        <div id="bicycle_pump" class="mb-4 w-full md:w-1/4">
+                                             <label for="id_bicycle_pump"
+                                                    class="relative inline-flex items-center mb-4 cursor-pointer">
+                                                  {{ form.bicycle_pump }}
+                                                  <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                                                  </div>
+                                                  <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.bicycle_pump.label }}</span>
+                                             </label>
+                                             {% for error in form.bicycle_pump.errors %}
+                                                  <p>
+                                                       <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                                  </p>
+                                             {% endfor %}
+                                        </div>
+                                        <div id="good_shoes" class="mb-4 w-full md:w-1/4">
+                                             <label for="id_good_shoes"
+                                                    class="relative inline-flex items-center mb-4 cursor-pointer">
+                                                  {{ form.good_shoes }}
+                                                  <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                                                  </div>
+                                                  <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.good_shoes.label }}</span>
+                                             </label>
+                                             {% for error in form.good_shoes.errors %}
+                                                  <p>
+                                                       <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                                  </p>
+                                             {% endfor %}
+                                        </div>
+                                   </div>
+                                   <div class="flex flex-col md:flex-row justify-between">
+                                        <div id="walking_stick" class="mb-4 w-full md:w-1/4">
+                                             <label for="id_walking_stick"
+                                                    class="relative inline-flex items-center mb-4 cursor-pointer">
+                                                  {{ form.walking_stick }}
+                                                  <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                                                  </div>
+                                                  <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.walking_stick.label }}</span>
+                                             </label>
+                                             {% for error in form.walking_stick.errors %}
+                                                  <p>
+                                                       <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                                  </p>
+                                             {% endfor %}
+                                        </div>
+                                        <div id="tent" class="mb-4 w-full md:w-1/4">
+                                             <label for="id_tent"
+                                                    class="relative inline-flex items-center mb-4 cursor-pointer">
+                                                  {{ form.tent }}
+                                                  <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                                                  </div>
+                                                  <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.tent.label }}</span>
+                                             </label>
+                                             {% for error in form.tent.errors %}
+                                                  <p>
+                                                       <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                                  </p>
+                                             {% endfor %}
+                                        </div>
+                                        <div id="transport" class="mb-4 w-full md:w-1/4">
+                                             <label for="id_transport"
+                                                    class="relative inline-flex items-center mb-4 cursor-pointer">
+                                                  {{ form.transport }}
+                                                  <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                                                  </div>
+                                                  <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.transport.label }}</span>
+                                             </label>
+                                             {% for error in form.transport.errors %}
+                                                  <p>
+                                                       <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                                  </p>
+                                             {% endfor %}
+                                        </div>
+                                        <div id="anti_slip_shoes" class="mb-4 w-full md:w-1/4">
+                                             <label for="id_anti_slip_shoes"
+                                                    class="relative inline-flex items-center mb-4 cursor-pointer">
+                                                  {{ form.anti_slip_shoes }}
+                                                  <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                                                  </div>
+                                                  <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.anti_slip_shoes.label }}</span>
+                                             </label>
+                                             {% for error in form.anti_slip_shoes.errors %}
+                                                  <p>
+                                                       <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                                  </p>
+                                             {% endfor %}
+                                        </div>
+                                   </div>
+                                   <div class="flex flex-col md:flex-row justify-between">
+                                        <div id="snow_stick" class="mb-4 w-full md:w-1/2">
+                                             <label for="id_snow_stick"
+                                                    class="relative inline-flex items-center mb-4 cursor-pointer">
+                                                  {{ form.snow_stick }}
+                                                  <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                                                  </div>
+                                                  <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.snow_stick.label }}</span>
+                                             </label>
+                                             {% for error in form.snow_stick.errors %}
+                                                  <p>
+                                                       <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                                  </p>
+                                             {% endfor %}
+                                        </div>
+                                        <div id="warm_and_weatherproof_clothing" class="mb-4 w-full md:w-1/2">
+                                             <label for="id_warm_and_weatherproof_clothing"
+                                                    class="relative inline-flex items-center mb-4 cursor-pointer">
+                                                  {{ form.warm_and_weatherproof_clothing }}
+                                                  <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                                                  </div>
+                                                  <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.warm_and_weatherproof_clothing.label }}</span>
+                                             </label>
+                                             {% for error in form.warm_and_weatherproof_clothing.errors %}
+                                                  <p>
+                                                       <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                                  </p>
+                                             {% endfor %}
+                                        </div>
+                                   </div>
+                                   <div class="flex flex-col md:flex-row justify-between md:space-x-2">
+                                        <div id="level" class="mb-4 w-full md:w-1/2">
+                                             <label for="id_level"
+                                                    class="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white">
+                                                  {{ form.level.label }}
+                                             </label>
+                                             {{ form.level }}
+                                             {% for error in form.level.errors %}
+                                                  <p>
+                                                       <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                                  </p>
+                                             {% endfor %}
+                                        </div>
+                                        <div id="hiking_type" class="mb-4 w-full md:w-1/2">
+                                             <label for="id_hiking_type"
+                                                    class="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white">
+                                                  {{ form.hiking_type.label }}
+                                             </label>
+                                             {{ form.hiking_type }}
+                                             {% for error in form.hiking_type.errors %}
+                                                  <p>
+                                                       <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                                  </p>
+                                             {% endfor %}
+                                        </div>
+                                   </div>
+                                   
+                                   <div class="flex flex-col md:flex-row justify-between md:space-x-2">
+                                        <div id="bicycle_type" class="mb-4 w-full md:w-1/2">
+                                             <label for="id_bicycle_type"
+                                                    class="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white">
+                                                  {{ form.bicycle_type.label }}
+                                             </label>
+                                             {{ form.bicycle_type }}
+                                             {% for error in form.bicycle_type.errors %}
+                                                  <p>
+                                                       <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                                  </p>
+                                             {% endfor %}
+                                        </div>
+                                        <div id="moto_type" class="mb-4 w-full md:w-1/2">
+                                             <label for="id_moto_type"
+                                                    class="block mb-2 mt-2 text-sm font-medium text-gray-900 dark:text-white">
+                                                  {{ form.moto_type.label }}
+                                             </label>
+                                             {{ form.moto_type }}
+                                             {% for error in form.moto_type.errors %}
+                                                  <p>
+                                                       <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                                  </p>
+                                             {% endfor %}
+                                        </div>
+                                   </div>
+                                   <div class="flex flex-col md:flex-row justify-between md:space-x-2 mb-10">
+                                        <div id="authorization" class="mb-4 w-full md:w-1/2">
+                                             <label for="id_authorization"
+                                                    class="block mb-2  text-sm font-medium text-gray-600 dark:text-white">
+                                                  {{ form.authorization.label }}
+                                             </label>
+                                             {{ form.authorization }}
+                                             {% for error in form.authorization.errors %}
+                                                  <p>
+                                                       <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                                  </p>
+                                             {% endfor %}
+                                        </div>
+                                        <div id="medical_certificate" class="mb-4 w-full md:w-1/2">
+                                             <label for="id_medical_certificate"
+                                                    class="block mb-2  text-sm font-medium text-gray-600 dark:text-white">
+                                                  {{ form.medical_certificate.label }}
+                                             </label>
+                                             {{ form.medical_certificate }}
+                                             {% for error in form.medical_certificate.errors %}
+                                                  <p>
+                                                       <small class="text-sm text-red-700 dark:text-red-500">{{ error }}</small>
+                                                  </p>
+                                             {% endfor %}
+                                        </div>
+                                   </div>
+                                   <button class="text-white bg-gradient-to-r from-redPrime via-redPrime to-redDark hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-redDark dark:focus:ring-redDark shadow-lg shadow-redDark/50 dark:shadow-lg dark:shadow-redPrime/80 font-medium rounded-lg text-sm px-20 py-2.5 text-center mr-2 mb-2"
+                                           type="submit">
+                                        {% if object %}
+                                             {% translate "Update" %}
+                                        {% else %}
+                                             {% translate "Create" %}
+                                        {% endif %}
+                                   </button>
+                              </form>
+                         {% endif %}
+                    </div>
+               </div>
+          </div>
+     </div>
+   
+     {% else %}
+     {% comment %} you must create club or shop pour cree une evenement {% endcomment %}
+     <div class="text-center p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
+         <span class="font-medium">{% translate "Warning alert!" %}</span>  
+          {% translate "You must first create a club or blind in order to create an event." %}
+       </div>
+                                
+                             {% endif %} 
+ </div>
+{% endblock content %}
+{% block extrajs %}
+     {{ form.media }}
+     <script>
+          //style css pour map
+           const addressElement = document.getElementById("map");
+          addressElement.classList.add(
+               "bg-gray-100", 
+               "border", 
+               "border-gray-300", 
+               "text-gray-900", 
+               "text-sm" , 
+               "rounded-lg", 
+               "focus:ring-blue-500",
+               "focus:border-blue-500",
+               "block",
+               "w-full",
+               "p-2.5",
+               "cursor-not-allowed",
+               "dark:bg-gray-700",
+               "dark:border-gray-600",
+               "dark:placeholder-gray-400",
+               "dark:text-gray-400",
+               "dark:focus:ring-blue-500",
+               "dark:focus:border-blue-500"
+               );
+     </script>
+     {% comment %} importez de datepicker.min.js {% endcomment %}
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/datepicker.min.js"></script>
+     
+     
+     
+     {% for act in request.user.profile.activity.all %}
+          {% if act.id == 1 %}
+               <script>
+                    document.getElementById("bicycle_pump").classList.add("hidden")
+                    document.getElementById("bicycle_type").classList.add("hidden")
+                    document.getElementById("hiking_type").classList.add("hidden")
+                    document.getElementById("good_shoes").classList.add("hidden")
+                    document.getElementById("walking_stick").classList.add("hidden")
+                    document.getElementById("tent").classList.add("hidden")
+                    document.getElementById("transport").classList.add("hidden")
+                    document.getElementById("anti_slip_shoes").classList.add("hidden")
+                    document.getElementById("snow_stick").classList.add("hidden")
+                    document.getElementById("warm_and_weatherproof_clothing").classList.add("hidden")
+                    document.getElementById("medical_certificate").classList.add("hidden")
+               </script>
+          {% endif %}
+          {% if act.id == 2 %}
+               <script>
+                    document.getElementById("safety_vest").classList.add("hidden")
+                    document.getElementById("moto_type").classList.add("hidden")
+                    document.getElementById("hiking_type").classList.add("hidden")
+                    document.getElementById("good_shoes").classList.add("hidden")
+                    document.getElementById("walking_stick").classList.add("hidden")
+                    document.getElementById("tent").classList.add("hidden")
+                    document.getElementById("transport").classList.add("hidden")
+                    document.getElementById("anti_slip_shoes").classList.add("hidden")
+                    document.getElementById("snow_stick").classList.add("hidden")
+                    document.getElementById("warm_and_weatherproof_clothing").classList.add("hidden")
+                    document.getElementById("medical_certificate").classList.add("hidden")
+               </script>
+          {% endif %}
+          {% if act.id == 3 %}
+               <script>
+                    document.getElementById("framing_device").classList.add("hidden")
+                    document.getElementById("camera_man").classList.add("hidden")
+                    document.getElementById("body_protection").classList.add("hidden")
+                    document.getElementById("authorization").classList.add("hidden")
+                    document.getElementById("level").classList.add("hidden")
+                    document.getElementById("helmet").classList.add("hidden")
+                    document.getElementById("safety_vest").classList.add("hidden")
+                    document.getElementById("bicycle_pump").classList.add("hidden")
+                    document.getElementById("moto_type").classList.add("hidden")
+                    document.getElementById("bicycle_type").classList.add("hidden")
+                    document.getElementById("snow_stick").classList.add("hidden")
+                    document.getElementById("warm_and_weatherproof_clothing").classList.add("hidden")
+                    
+               </script>
+          {% endif %}
+          {% if act.id == 4 %}
+               <script>
+                    document.getElementById("framing_device").classList.add("hidden")
+                    document.getElementById("camera_man").classList.add("hidden")
+                    document.getElementById("body_protection").classList.add("hidden")
+                    document.getElementById("authorization").classList.add("hidden")
+                    document.getElementById("level").classList.add("hidden")
+                    document.getElementById("helmet").classList.add("hidden")
+                    document.getElementById("safety_vest").classList.add("hidden")
+                    document.getElementById("bicycle_pump").classList.add("hidden")
+                    document.getElementById("moto_type").classList.add("hidden")
+                    document.getElementById("bicycle_type").classList.add("hidden")
+
+                    
+                    document.getElementById("snow_stick").classList.add("hidden")
+                    document.getElementById("warm_and_weatherproof_clothing").classList.add("hidden")
+                    
+               </script>
+          {% endif %}
+          {% if act.id == 5 %}
+               <script>
+                    document.getElementById("framing_device").classList.add("hidden")
+                    document.getElementById("camera_man").classList.add("hidden")
+                    document.getElementById("body_protection").classList.add("hidden")
+                    
+                    document.getElementById("level").classList.add("hidden")
+                    document.getElementById("helmet").classList.add("hidden")
+                    document.getElementById("safety_vest").classList.add("hidden")
+                    document.getElementById("bicycle_pump").classList.add("hidden")
+                    document.getElementById("moto_type").classList.add("hidden")
+                    document.getElementById("bicycle_type").classList.add("hidden")
+
+                    document.getElementById("hiking_type").classList.add("hidden")
+                    
+                    document.getElementById("walking_stick").classList.add("hidden")
+                    document.getElementById("tent").classList.add("hidden")
+                    document.getElementById("transport").classList.add("hidden")
+                    document.getElementById("anti_slip_shoes").classList.add("hidden")
+                    document.getElementById("snow_stick").classList.add("hidden")
+                    document.getElementById("warm_and_weatherproof_clothing").classList.add("hidden")
+                    
+               </script>
+          {% endif %}
+          {% if act.id == 6 %}
+               <script>
+                    document.getElementById("framing_device").classList.add("hidden")
+                    document.getElementById("camera_man").classList.add("hidden")
+                    document.getElementById("body_protection").classList.add("hidden")
+                    document.getElementById("level").classList.add("hidden")
+                    document.getElementById("helmet").classList.add("hidden")
+                    document.getElementById("safety_vest").classList.add("hidden")
+                    document.getElementById("bicycle_pump").classList.add("hidden")
+                    document.getElementById("moto_type").classList.add("hidden")
+                    document.getElementById("bicycle_type").classList.add("hidden")
+                    document.getElementById("hiking_type").classList.add("hidden")
+                    document.getElementById("walking_stick").classList.add("hidden")
+                    document.getElementById("tent").classList.add("hidden")
+                    document.getElementById("transport").classList.add("hidden")
+                    document.getElementById("anti_slip_shoes").classList.add("hidden")
+                    document.getElementById("snow_stick").classList.add("hidden")
+                    document.getElementById("warm_and_weatherproof_clothing").classList.add("hidden")
+                    
+               </script>
+          {% endif %}
+          {% if act.id == 7 %}
+               <script>
+                    document.getElementById("framing_device").classList.add("hidden")
+                    document.getElementById("camera_man").classList.add("hidden")
+                    document.getElementById("body_protection").classList.add("hidden")
+                    document.getElementById("level").classList.add("hidden")
+                    document.getElementById("helmet").classList.add("hidden")
+                    document.getElementById("safety_vest").classList.add("hidden")
+                    document.getElementById("bicycle_pump").classList.add("hidden")
+                    document.getElementById("moto_type").classList.add("hidden")
+                    document.getElementById("bicycle_type").classList.add("hidden")
+                    document.getElementById("hiking_type").classList.add("hidden")
+                    document.getElementById("good_shoes").classList.add("hidden")
+                    document.getElementById("anti_slip_shoes").classList.add("hidden")
+                    document.getElementById("snow_stick").classList.add("hidden")
+                    document.getElementById("warm_and_weatherproof_clothing").classList.add("hidden")
+                    
+               </script>
+          {% endif %}
+     {% endfor %}
+{% endblock extrajs %}
